@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cover;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -17,6 +18,9 @@ class StoreController extends Controller
         })
         ->get();
 
-        return view('store', compact('covers'));
+        $lastProducts = Product::orderBy('created_at','desc')
+                                ->take(12)->get();
+
+        return view('store', compact('covers','lastProducts'));
     }
 }

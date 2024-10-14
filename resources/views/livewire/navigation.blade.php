@@ -23,7 +23,7 @@
                 </h1>
 
                 <div class="flex-1 hidden md:block">
-                    <x-input class="w-full" placeholder="Buscar por producto"/>
+                    <x-input oninput="search(this.value)" class="w-full" placeholder="Buscar por producto"/>
                 </div>
 
                 <div class="flex items-center space-x-4 md:space-x-8">
@@ -77,14 +77,17 @@
                         </x-slot>
                     </x-dropdown>
                     
-                    <button class="text-xl">
-                        <i class="fas fa-shopping-cart text-white"></i>
-                    </button>
+                    <a href="{{route('cart.index')}}" class="relative">
+                        <i class="fas fa-shopping-cart text-white text-xl"></i>
+                        <span id="cart-count" class="absolute -top-2 -end-4 inline-flex w-6 h-6 items-center justify-center bg-red-500 rounded-full text-white text-xs font-bold">
+                            {{Cart::instance('shopping')->count()}}
+                        </span>
+                    </a>
                 </div>
             </div>
 
             <div class="mt-4 md:hidden">
-                <x-input class="w-full" placeholder="Buscar por producto"/>
+                <x-input oninput="search(this.value)" class="w-full" placeholder="Buscar por producto"/>
             </div>
         </x-container>
     </header>
@@ -110,7 +113,7 @@
                     <ul>
                         @foreach ($categories as $category)
                             <li>
-                                <a href="" class="flex items-center justify-between px-4 py-4 text-gray-700 hover:bg-purple-200">
+                                <a href="{{route('categories.show', $category)}}" class="flex items-center justify-between px-4 py-4 text-gray-700 hover:bg-purple-200">
                                     {{$category->name}}
                                     <i class="fa-solid fa-angle-right"></i>
                                 </a>
@@ -122,4 +125,19 @@
             <div></div>
         </div>
     </div>
+
+    @push('js')
+        <script>
+
+            Livewire.on('cartUpdated', (count) => {
+                document.getElementById('cart-count').innerText = count;
+            });
+
+            function search(value){
+                Livewire.dispatch('search', {
+                    search: value
+                })
+            }
+        </script>
+    @endpush
 </div>
