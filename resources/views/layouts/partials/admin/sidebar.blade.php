@@ -29,6 +29,12 @@
             'name' => 'Portadas',
             'route' => route('admin.covers.index'),
             'active' => request()->routeIs('admin.covers.*')
+        ],
+        [
+            'icon' => 'fa-solid fa-envelope',
+            'name' => 'Invitaciones',
+            'route' => route('admin.invitations.index'),
+            'active' => request()->routeIs('admin.invitations.*')
         ]
     ];
 @endphp

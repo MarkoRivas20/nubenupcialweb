@@ -63,7 +63,7 @@
                     </p>
                 </div>
 
-                <a href="" class="btn btn-blue block w-full text-center">
+                <a href="{{route('checkout.index')}}" class="btn btn-blue block w-full text-center">
                     Continuar compra
                 </a>
             </div>
