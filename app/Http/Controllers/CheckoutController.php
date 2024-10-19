@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use CodersFree\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Http;
 
-class CheckoutController extends Controller
+class CheckoutController extends Controller implements HasMiddleware
 {
 
+    public static function middleware(): array
+    {
+        return [
+            'auth',
+        ];
+    }
     public function index(){
         
         $access_token = $this->generateAccessToken();
@@ -76,6 +84,27 @@ class CheckoutController extends Controller
             ]
         ])->json();
 
-        return $response;
+        session()->flash('niubiz',[
+            'response' => $response,
+            'purchaseNumber' => $request->purchaseNumber,
+        ]);
+
+        if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE'] == '000') {
+            
+            Order::create([
+                'content' => Cart::instance('shopping')->content(),
+                'payment_method' => 2,
+                'payment_id' => $response['dataMap']['TRANSACTION_ID'],
+                'total' => $request->amount,
+                'user_id' => auth()->id()
+            ]);
+
+            Cart::destroy();
+
+            return redirect()->route('checkout.successful');
+        }
+        
+        return redirect()->route('checkout.index');
+        
     }
 }

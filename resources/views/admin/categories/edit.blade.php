@@ -14,7 +14,7 @@
 
     <div class="card">
 
-        <x-valdiation-error class="mb-4"/>
+        <x-validation-errors class="mb-4"/>
 
         <form action="{{ route('admin.categories.update', $category) }}" method="POST">
             @csrf

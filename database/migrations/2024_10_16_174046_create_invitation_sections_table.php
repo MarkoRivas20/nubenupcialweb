@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attribute_invitation', function (Blueprint $table) {
+        Schema::create('invitation_sections', function (Blueprint $table) {
             $table->id();
-            $table->string('value');
+            $table->string('name');
+            $table->text('body');
+            $table->integer('type_background');
+            $table->string('background');
+            $table->integer('order');
             $table->foreignId('invitation_id')->constrained();
-            $table->foreignId('attribute_id')->constrained();
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attribute_invitation');
+        Schema::dropIfExists('invitation_sections');
     }
 };

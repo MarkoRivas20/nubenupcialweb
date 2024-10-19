@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Invitation;
 use App\Models\Section;
+use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -24,15 +25,16 @@ class InvitationController extends Controller
             $body = str_replace($attribute->key,$attribute->value,$body);
         }*/
         //return view('admin.invitations.index', compact('body','attributes'));
+        
         return view('admin.invitations.index');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Template $template)
     {
-        //
+        return view ('admin.invitations.create', compact('template'));
     }
 
     /**

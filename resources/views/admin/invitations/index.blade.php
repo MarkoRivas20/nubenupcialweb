@@ -8,9 +8,7 @@
     ],
 ]">
 
-<div>
-    {{$body}}
+@livewire('admin.invitations.invitation-index')
 
-</div>
 
 </x-admin-layout>

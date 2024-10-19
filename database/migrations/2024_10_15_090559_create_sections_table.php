@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->text('body');
             $table->integer('type_background');
             $table->string('background');
-            $table->integer('order');
             $table->foreignId('template_id')->constrained();
             $table->timestamps();
         });

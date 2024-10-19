@@ -12,8 +12,13 @@ class Attribute extends Model
     //TEXTO, CANCION (URL DE CANCION), IMAGEN (URL DE IMAGEN)
 
     protected $fillable = [
+        'type',
         'key',
         'value',
         'template_id'
     ];
+
+    public function section(){
+        return $this->belongsTo(Section::class);
+    }
 }

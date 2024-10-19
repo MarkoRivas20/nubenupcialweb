@@ -15,9 +15,12 @@ Route::get('categories/{category}',[CategoryController::class, 'show'])->name('c
 Route::get('products/{product}',[ProductController::class,'show'])->name('products.show');
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 
-Route::get('checkout',[CheckoutController::class,'index'])->name('checkout.index');
+Route::get('checkout',[CheckoutController::class,'index'])->middleware('auth')->name('checkout.index');
 
 Route::post('checkout/paid', [CheckoutController::class,'paid'])->name('checkout.paid');
+Route::get('checkout/successful', function(){
+    return view('checkout.successful');
+})->name('checkout.successful');
 
 Route::middleware([
     'auth:sanctum',

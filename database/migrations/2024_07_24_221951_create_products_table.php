@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('image_path');
             $table->float('price');
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(false);
             $table->foreignId('category_id')->constrained();
             
             $table->integer('stock')->unsigned()->default(0);

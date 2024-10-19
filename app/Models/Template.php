@@ -13,4 +13,8 @@ class Template extends Model
         'name',
         'status'
     ];
+
+    public function sections(){
+        return $this->hasMany(Section::class);
+    }
 }

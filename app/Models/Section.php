@@ -10,10 +10,18 @@ class Section extends Model
     use HasFactory;
 
     protected $fillable = [
+        'name',
         'body',
         'type_background',
         'background',
-        'order',
         'template_id'
     ];
+
+    public function template(){
+        return $this->belongsTo(Template::class);
+    }
+
+    public function attributes(){
+        return $this->hasMany(Attribute::class);
+    }
 }

@@ -62,7 +62,7 @@ class ProductVariants extends Component
     public function removeFeature($index){
 
         unset($this->variant['features'][$index]);
-        $this->variant['feature'] = array_values($this->variant['features']);
+        $this->variant['features'] = array_values($this->variant['features']);
     }
 
     public function deleteFeature($option_id, $feature_id){

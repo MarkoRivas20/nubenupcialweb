@@ -110,6 +110,39 @@
                         </button>
 
                     </div>
+
+                    @if (session('niubiz'))
+                        @php
+                            $response = session('niubiz')['response'];
+                            $purchaseNumber = session('niubiz')['purchaseNumber'];
+                        @endphp
+                        @isset($response['data'])
+                            <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 mt-8" role="alert">
+                            <p class="mb-4">
+                                {{$response['data']['ACTION_DESCRIPTION']}}
+                            </p>
+                            <p>
+                                <b>Número de pedido:</b>
+                                {{$purchaseNumber}}
+                            </p>
+                            <p>
+                                <b>Fecha y hora del pedido</b>
+                                {{
+                                    now()->createFromFormat('ymdHis',$response['data']['TRANSACTION_DATE'])->format('d-m-Y H:i:s')
+                                }}
+                            </p>
+
+                            @isset($response['data']['CARD'])
+                                
+                                <p>
+                                    <b>Tarjeta:</b>
+                                    {{$response['data']['CARD']}} ({{$response['data']['BRAND']}})
+                                </p>
+                            @endisset
+
+                            </div>
+                        @endisset
+                    @endif
                 </div>
             </div>
         </div>
