@@ -36,13 +36,77 @@
 
     </x-container>
 
-    @if ($product->variants->count())
-        @livewire('products.add-to-cart-variants', ['product' => $product])
-    @else
-        @livewire('products.add-to-cart', ['product' => $product])
+    <x-container>
         
-    @endif
+        <div class="card">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="col-span-1">
+                    {{-- <figure>
+                        <img src="{{$product->image}}" class="aspect-[1/1] w-full object-cover object-center">
+                    </figure> --}}
 
+                    <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff; aspect-ratio : 1 / 1;" class="swiper mySwiper2">
+                        <div class="swiper-wrapper">
+                          <div class="swiper-slide">
+                            <img src="{{$product->image}}" />
+                          </div>
+                          @foreach ($product->images as $image)
+                            <div class="swiper-slide">
+                                <img src="{{Storage::url($image->file_path)}}" />
+                            </div>
+                          @endforeach
+                          
+                        </div>
+                        @if ($product->images->count())
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        @endif
+                      </div>
 
+                      @if ($product->images->count())
+                        <div thumbsSlider="" class="swiper mySwiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <img src="{{$product->image}}" />
+                                </div>
+                                @foreach ($product->images as $image)
+                                    <div class="swiper-slide">
+                                        <img src="{{Storage::url($image->file_path)}}" />
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div> 
+                      @endif
+                      
+                    
+                </div>
 
+                <div class="col-span-1">
+                    @livewire('products.add-to-cart', ['product' => $product])
+                </div>
+            </div>
+        </div>
+    </x-container>
+    @push('js')
+
+    <script>
+        
+        var swiper = new Swiper(".mySwiper", {
+        spaceBetween: 10,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesProgress: true,
+        });
+        var swiper2 = new Swiper(".mySwiper2", {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiper,
+        },
+        });
+    </script>
+@endpush
 </x-app-layout>

@@ -12,6 +12,9 @@ class OrderTable extends DataTableComponent
 {
     protected $model = Order::class;
 
+    public $openModalOrder = false;
+    public $order = [];
+
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -30,6 +33,21 @@ class OrderTable extends DataTableComponent
             Column::make("total", "total")
                 ->format(function($value){
                     return "S/ ".number_format($value,2);
+                })
+                ->sortable(),
+            Column::make("Método de pago", "payment_method")
+                ->format(function($value){
+                    switch ($value) {
+                        case 1:
+                            return 'Yape o Plin';
+                            break;
+                        case 2:
+                            return 'Crédito o Débito';
+                            break;
+                        default:
+                            # code...
+                            break;
+                    };
                 })
                 ->sortable(),
             Column::make("Cantidad", "content")
@@ -87,5 +105,25 @@ class OrderTable extends DataTableComponent
 
         $order->status = OrderStatus::Refunded;
         $order->save();
+    }
+
+    public function showOrder(Order $order){
+
+        $this->order = [];
+
+        foreach ($order->content as $key => $item) {
+            $this->order[] = [
+                'name' =>$item['name'],
+                'qty' => $item['qty'],
+                'price' => $item['price'],
+                'options' => $item['options']
+            ];
+        }
+        //dd($this->order);
+        $this->openModalOrder = true;
+    }
+
+    public function customView():string {
+        return 'admin.orders.modal';
     }
 }

@@ -18,4 +18,6 @@
 
 @livewire('admin.products.product-variants', ['product' => $product], key('product-variants-'.$product->id))
 
+@livewire('admin.products.product-images', ['product' => $product], key('product-images-'.$product->id))
+
 </x-admin-layout>

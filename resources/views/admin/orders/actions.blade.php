@@ -1,4 +1,8 @@
 <div class="flex flex-col space-y-2">
+    <button wire:click="showOrder({{$order->id}})" class="underline text-blue-500 hover:no-underline">
+        Ver Pedido
+    </button>
+    
     @switch($order->status)
         @case(\App\Enums\OrderStatus::Pending)
             <button wire:click="markAsProcessing({{$order->id}})" class="underline text-blue-500 hover:no-underline">

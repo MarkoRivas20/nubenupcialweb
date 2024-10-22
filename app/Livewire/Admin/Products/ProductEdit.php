@@ -19,7 +19,7 @@ class ProductEdit extends Component
 
     public function mount($product){
 
-        $this->productEdit = $product->only('sku','name','description', 'image_path','price','stock', 'category_id');
+        $this->productEdit = $product->only('sku','name','description', 'image_path','price','stock','status', 'category_id');
     
         $this->categories = Category::all();
     }
@@ -48,8 +48,8 @@ class ProductEdit extends Component
             'productEdit.name' => 'required|max:255',
             'productEdit.description' => 'required',
             'productEdit.price' => 'required|numeric|min:0',
-            'productEdit.stock' => 'required|numeric|min:0',
-            'productEdit.category_id' => 'required|exists:categories,id'
+            'productEdit.category_id' => 'required|exists:categories,id',
+            'productEdit.status' => 'required|boolean'
         ]);
 
         if ($this->image) {

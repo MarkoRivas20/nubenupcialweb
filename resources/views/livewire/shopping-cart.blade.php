@@ -14,10 +14,17 @@
             <div class="card">
                 <ul class="space-y-4">
                     @forelse (Cart::content() as $item)
-                        <li class="lg:flex">
-                            <img src="{{$item->options->image}}" class="w-full lg:w-24 aspect-[16/9] object-cover object-center">
+                        <li class="lg:flex {{$item->qty > $item->options['stock'] ? 'text-red-500' : ''}}">
+                            <img src="{{$item->options->image}}" class="w-full lg:w-24 aspect-[4/3] object-cover object-center">
                             <div class="w-80 lg:ml-2">
-                                <p class="text-sm">
+
+                                @if ($item->qty > $item->options['stock'])
+                                    <p class="font-semibold">
+                                        Stock insuficiente
+                                    </p>
+                                @endif
+
+                                <p class="text-sm truncate">
                                     <a href="{{route('products.show', $item->id)}}">
                                         {{$item->name}}
                                     </a>
@@ -32,13 +39,20 @@
                                 S/ {{$item->price}}
                             </p>
                             <div class="ml-auto space-x-3">
-                                <button class="btn btn-blue" wire:click="decrease('{{$item->rowId}}')">
+                                <button class="btn btn-blue" 
+                                wire:click="decrease('{{$item->rowId}}')"
+                                wire:loading.attr="disabled".
+                                wire:target="decrease('{{$item->rowId}}')">
                                     -
                                 </button>
                                 <span class="inline-block w-2 text-center">
                                     {{$item->qty}}
                                 </span>
-                                <button class="btn btn-blue" wire:click="increase('{{$item->rowId}}')">
+                                <button class="btn btn-blue" 
+                                wire:click="increase('{{$item->rowId}}')"
+                                wire:loading.attr="disabled".
+                                wire:target="increase('{{$item->rowId}}')"
+                                @disabled($item->qty >= $item->options['stock'])>
                                     +
                                 </button>
                             </div>
@@ -59,13 +73,20 @@
                     </p>
 
                     <p>
-                        S/ {{Cart::subtotal()}}
+                        S/ {{$this->subtotal}}
                     </p>
                 </div>
 
-                <a href="{{route('checkout.index')}}" class="btn btn-blue block w-full text-center">
-                    Continuar compra
-                </a>
+                
+                @if (Cart::count())
+                    <a href="{{route('checkout.index')}}" class="btn btn-blue block w-full text-center">
+                        Continuar compra
+                    </a>
+                @else
+                    <button class="btn btn-blue block w-full text-center" disabled>
+                        Continuar compra
+                    </button>
+                @endif
             </div>
         </div>
     </div>

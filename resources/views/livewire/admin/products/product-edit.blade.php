@@ -57,13 +57,18 @@
                 <x-input type="number" step="0.01" wire:model="productEdit.price" class="w-full" placeholder="Por favor, introduzca el precio del producto"/>
             </div>
 
-            @empty($product->variants->count() > 0)
-                <div class="mb-4">
-                    <x-label class="mb-1">Stock</x-label>
-                    <x-input type="number" step="1" wire:model="productEdit.stock" class="w-full" placeholder="Por favor, introduzca el stock del producto"/>
-                </div>
-                
-            @endempty
+
+            <div class="mb-4 flex space-x-2">
+                <label>
+                    <x-input type="radio" wire:model="productEdit.status" name="status" value="1"/>
+                    Activo
+                </label>
+        
+                <label>
+                    <x-input type="radio" wire:model="productEdit.status" name="status" value="0"/>
+                    Inactivo
+                </label>
+            </div>
             
 
             <div class="flex justify-end">

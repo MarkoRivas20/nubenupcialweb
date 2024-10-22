@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Variant;
 use CodersFree\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -18,10 +19,24 @@ class CheckoutController extends Controller implements HasMiddleware
         ];
     }
     public function index(){
+
+        Cart::instance('shopping');
+        $content = Cart::content()->filter(function ($item){
+            return $item->qty <= $item->options['stock'];
+        });
+
+        if ($content->count() == 0) {
+            return redirect()->route('cart.index');
+        }
+
+        $subtotal = $content->sum(function($item){
+            return $item->subtotal;
+        });
         
         $access_token = $this->generateAccessToken();
-        $session_token = $this->generateSessionToken($access_token);
-        return view('checkout.index', compact('session_token'));
+        $session_token = $this->generateSessionToken($access_token, $subtotal);
+
+        return view('checkout.index', compact('content','subtotal','session_token'));
     }
 
     public function generateAccessToken(){
@@ -38,7 +53,7 @@ class CheckoutController extends Controller implements HasMiddleware
 
     }
 
-    public function generateSessionToken($access_token){
+    public function generateSessionToken($access_token, $subtotal){
 
         $merchant_id = config('services.niubiz.merchant_id');
         $url_api = config('services.niubiz.url_api') . "/api.ecommerce/v2/ecommerce/token/session/{$merchant_id}";
@@ -48,7 +63,7 @@ class CheckoutController extends Controller implements HasMiddleware
             'Content-Type' => 'application/json', 
         ])->post($url_api, [
             'channel' => 'web',
-            'amount' => Cart::instance('shopping')->subtotal(),
+            'amount' => $subtotal,
             'antifraud' => [
                 'client_ip' => request()->ip(),
                 'merchantDefineData' => [
@@ -61,6 +76,50 @@ class CheckoutController extends Controller implements HasMiddleware
         ])->json();
 
         return $response['sessionKey'];
+    }
+
+    public function buy(){
+
+        Cart::instance('shopping');
+        $content = Cart::content()->filter(function ($item){
+            return $item->qty <= $item->options['stock'];
+        });
+
+        $subtotal = $content->sum(function($item){
+            return $item->subtotal;
+        });
+
+        $this->createOrder(1, '', $subtotal);
+
+        session()->flash('digitalWallet',[
+            'response' => 'Pronto un colaborador se comunicará contigo para poder brindarte el número al cual realizar la transferencia',
+        ]);
+
+        return redirect()->route('checkout.successful');
+    }
+
+    protected function createOrder($payment_method, $payment_id, $total){
+        Cart::instance('shopping');
+        $content = Cart::content()->filter(function ($item){
+            return $item->qty <= $item->options['stock'];
+        });
+
+        Order::create([
+            'content' => $content,
+            'payment_method' => $payment_method,
+            'payment_id' => $payment_id,
+            'total' => $total,
+            'user_id' => auth()->id()
+        ]);
+
+        foreach ($content as $item) {
+            Variant::where('sku',$item->options['sku'])->decrement('stock', $item->qty);
+        
+            Cart::remove($item->rowId);
+        }
+
+        Cart::destroy();
+
     }
 
     public function paid(Request $request){
@@ -91,15 +150,7 @@ class CheckoutController extends Controller implements HasMiddleware
 
         if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE'] == '000') {
             
-            Order::create([
-                'content' => Cart::instance('shopping')->content(),
-                'payment_method' => 2,
-                'payment_id' => $response['dataMap']['TRANSACTION_ID'],
-                'total' => $request->amount,
-                'user_id' => auth()->id()
-            ]);
-
-            Cart::destroy();
+            $this->createOrder(2, $response['dataMap']['TRANSACTION_ID'], $request->amount);
 
             return redirect()->route('checkout.successful');
         }

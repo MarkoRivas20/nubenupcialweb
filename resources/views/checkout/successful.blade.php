@@ -33,6 +33,26 @@
                     {{$response['order']['amount']}} {{$response['order']['currency']}}
                 </p>
             </div>
+       
+        @endif
+
+        @if (session('digitalWallet'))
+            @php
+                $response = session('digitalWallet')['response'];
+
+            @endphp
+
+            <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 mt-8" role="alert">
+                <p class="mb-4">
+                    <b>
+                        ¡Compra registrada!
+                    </b>
+                </p>
+                <p>
+                    {{$response}}
+                </p>
+                
+            </div>
         @endif
     </div>
 </x-app-layout>

@@ -18,7 +18,7 @@ class StoreController extends Controller
         })
         ->get();
 
-        $lastProducts = Product::orderBy('created_at','desc')
+        $lastProducts = Product::where('status',true)->orderBy('created_at','desc')
                                 ->take(12)->get();
 
         return view('store', compact('covers','lastProducts'));

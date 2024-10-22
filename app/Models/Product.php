@@ -18,7 +18,7 @@ class Product extends Model
         'image_path',
         'price',
         'category_id',
-        'stock'
+        'status'
     ];
 
     public function scopeCustomOrder($query, $orderBy){
@@ -55,5 +55,9 @@ class Product extends Model
     //Relacion muchos a muchos
     public function options(){
         return $this->belongsToMany(Option::class)->using(OptionProduct::class)->withPivot('features')->withTimestamps();
+    }
+
+    public function images(){
+        return $this->morphMany(Image::class, 'imageable');
     }
 }

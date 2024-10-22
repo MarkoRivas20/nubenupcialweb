@@ -18,9 +18,15 @@ Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('checkout',[CheckoutController::class,'index'])->middleware('auth')->name('checkout.index');
 
 Route::post('checkout/paid', [CheckoutController::class,'paid'])->name('checkout.paid');
+Route::post('checkout/buy', [CheckoutController::class,'buy'])->name('checkout.buy');
+
 Route::get('checkout/successful', function(){
     return view('checkout.successful');
 })->name('checkout.successful');
+
+Route::get('404', function(){
+    return view('404');
+})->name('notfound');
 
 Route::middleware([
     'auth:sanctum',

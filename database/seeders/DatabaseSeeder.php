@@ -33,6 +33,6 @@ class DatabaseSeeder extends Seeder
             'name' => 'categoria 2'
         ]);
         
-        Product::factory(40)->create();
+        Product::factory(20)->create();
     }
 }

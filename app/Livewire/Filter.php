@@ -47,7 +47,8 @@ class Filter extends Component
 
     public function render()
     {
-        $products = Product::where('category_id', $this->category_id)
+        $products = Product::where('status', true)
+        ->where('category_id', $this->category_id)
         ->customOrder($this->orderBy)
         ->when($this->selected_features, function($query){
             $query->whereHas('variants.features', function($query){

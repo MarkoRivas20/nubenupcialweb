@@ -2,18 +2,48 @@
 
 namespace App\Livewire\Products;
 
+use App\Models\Feature;
 use CodersFree\Shoppingcart\Facades\Cart;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class AddToCart extends Component
 {
     public $product;
-
+    public $variant;
+    public $stock;
     public $qty = 1;
 
-    public function add_to_cart(){
+    public $selectedFeatures = [];
+
+    public function mount(){
         
+        $this->selectedFeatures = $this->product->variants->first()->features->pluck('id','option_id')->toArray();
+        
+        $this->getVariant();
+    }
+
+    public function add_to_cart(){
         Cart::instance('shopping');
+        
+        $item = Cart::search(function($item, $rowId){
+            return $item->options->sku === $this->variant->sku;
+        })->first();
+        
+        if ($item) {
+            $stock = $this->stock - $item->qty;
+
+            if ($stock < $this->qty) {
+                $this->dispatch('swal',[
+                    'icon' => 'error',
+                    'title' => 'No hay stock suficiente',
+                    'text' => 'No se puede agregar la cantidad indicada'
+                ]);
+
+                return;
+            }
+        }
+
         Cart::add([
             'id' => $this->product->id,
             'name' => $this->product->name,
@@ -21,8 +51,9 @@ class AddToCart extends Component
             'price' => $this->product->price,
             'options' => [
                 'image' => $this->product->image,
-                'sku' => $this->product->sku,
-                'features' => []
+                'sku' => $this->variant->sku,
+                'stock' => $this->variant->stock,
+                'features' => Feature::whereIn('id', $this->selectedFeatures)->pluck('description','id')->toArray()
             ]
         ]);
 
@@ -37,6 +68,19 @@ class AddToCart extends Component
             'title' => '¡Bien Hecho!',
             'text' => 'El producto de ha añadido al carrito de compras'
         ]);
+    }
+
+    public function updatedSelectedFeatures(){
+        $this->getVariant();
+    }
+
+    public function getVariant(){
+        $this->variant = $this->product->variants->filter(function($variant){
+            return !array_diff($variant->features->pluck('id')->toArray(),$this->selectedFeatures);
+        })->first();
+
+        $this->stock = $this->variant->stock;
+        $this->qty = 1;
     }
 
     public function render()

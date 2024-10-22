@@ -15,28 +15,11 @@
                                 <label class="p-4 flex items-center">
                                     <input type="radio" x-model="pago" value="1">
                                     <span class="ml-2">
-                                        Tarjeta de débito / crédito
-                                    </span>
-                                    <i class="h-6 ml-auto fa-solid fa-credit-card"></i>
-                                </label>
-
-                                <div x-show="pago == 1" class="p-4 bg-gray-100 text-center border-t border-gray-400">
-                                    <i class="fa-regular fa-credit-card text-9xl"></i>
-                                    <p class="mt-2">
-                                        Luego de hacer click en "Pagar ahora", se abrirá el checkout de Niubiz para completar tu compra de forma segura
-                                    </p>
-                                </div>
-                            </li>
-
-                            <li>
-                                <label class="p-4 flex items-center">
-                                    <input type="radio" x-model="pago" value="2">
-                                    <span class="ml-2">
                                         Deposito Bancario o Yape
                                     </span>
                                 </label>
 
-                                <div x-cloak x-show="pago == 2"  class="p-4 bg-gray-100 flex justify-center border-t border-gray-400">
+                                <div x-cloak x-show="pago == 1"  class="p-4 bg-gray-100 flex justify-center border-t border-gray-400">
                                     <div>
                                         <p>1. Pago por depósito o transferencia bancaria:</p>
                                         <p>- BCP soles: 189-156546251-98</p>
@@ -51,6 +34,25 @@
                                     </div>
                                 </div>
                             </li>
+
+                            <li>
+                                <label class="p-4 flex items-center">
+                                    <input type="radio" x-model="pago" value="2">
+                                    <span class="ml-2">
+                                        Tarjeta de débito / crédito
+                                    </span>
+                                    <i class="h-6 ml-auto fa-solid fa-credit-card"></i>
+                                </label>
+
+                                <div x-show="pago == 2" class="p-4 bg-gray-100 text-center border-t border-gray-400">
+                                    <i class="fa-regular fa-credit-card text-9xl"></i>
+                                    <p class="mt-2">
+                                        Luego de hacer click en "Pagar ahora", se abrirá el checkout de Niubiz para completar tu compra de forma segura
+                                    </p>
+                                </div>
+                            </li>
+
+                            
                         </ul>
                     </div>
                 </div>
@@ -58,7 +60,7 @@
             <div class="col-span-1">
                 <div class="lg:max-w-[40rem] py-12 px-4 lg:pl-8 sm:pr-6 lg:pr-8 mr-auto">
                     <ul class="space-y-4 mb-4">
-                        @foreach (Cart::instance('shopping')->content() as $item)
+                        @foreach ($content as $item)
                             <li class="flex items-center space-x-4">
                                 <div class="flex-shrink-0 relative">
                                     <img class="h-16 aspect-square" src="{{$item->options->image}}" alt="">
@@ -88,7 +90,7 @@
                         </p>
 
                         <p>
-                            S/ {{Cart::instance('shopping')->subtotal()}}
+                            S/ {{$subtotal}}
                         </p>
                     </div>
 
@@ -100,14 +102,22 @@
                         </p>
 
                         <p>
-                            S/ {{Cart::instance('shopping')->subtotal()}}
+                            S/ {{$subtotal}}
                         </p>
                     </div>
 
                     <div>
-                        <button onclick="VisanetCheckout.open()" class="btn btn-blue w-full">
-                            Finalizar Compra
-                        </button>
+                        <div x-show="pago == 2">
+                            <button onclick="VisanetCheckout.open()" class="btn btn-blue w-full">
+                                Finalizar Compra
+                            </button>
+                        </div>
+                        <div x-show="pago == 1">
+                            <button onclick="confirmBuy()" class="btn btn-blue w-full">
+                                Finalizar Compra
+                            </button>
+                        </div>
+                        
 
                     </div>
 
@@ -148,6 +158,10 @@
         </div>
     </div>
 
+    <form action="{{route('checkout.buy')}}" method="POST" id="buy-form">
+        @csrf
+    </form>
+
     @push('js')
         <script type="text/javascript" src="{{config('services.niubiz.url_js')}}" >
         </script>
@@ -157,7 +171,7 @@
             document.addEventListener('DOMContentLoaded', function(){
 
                 let purchasenumber = Math.floor(Math.random() * 1000000000);
-                let amount = {{Cart::instance('shopping')->subtotal()}}
+                let amount = {{$subtotal}}
 
                 VisanetCheckout.configure({
                 sessiontoken: '{{$session_token}}',
@@ -175,6 +189,11 @@
                 }
                 });
             });
+
+            function confirmBuy() {
+                
+                document.getElementById('buy-form').submit();
+            }
             
         </script>
     @endpush
