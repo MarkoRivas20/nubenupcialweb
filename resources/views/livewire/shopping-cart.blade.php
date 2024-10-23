@@ -14,7 +14,7 @@
             <div class="card">
                 <ul class="space-y-4">
                     @forelse (Cart::content() as $item)
-                        <li class="lg:flex {{$item->qty > $item->options['stock'] ? 'text-red-500' : ''}}">
+                        <li class="lg:flex lg:items-center {{($item->qty > $item->options['stock'] || $item->options['status'] == false) ? 'text-red-500' : ''}}">
                             <img src="{{$item->options->image}}" class="w-full lg:w-24 aspect-[4/3] object-cover object-center">
                             <div class="w-80 lg:ml-2">
 
@@ -24,11 +24,28 @@
                                     </p>
                                 @endif
 
+                                @if ($item->options['status'] == false)
+                                    <p class="font-semibold">
+                                        No disponible
+                                    </p>
+                                @endif
+
                                 <p class="text-sm truncate">
                                     <a href="{{route('products.show', $item->id)}}">
                                         {{$item->name}}
                                     </a>
                                 </p>
+                                @if ($item->options['features'])
+                                    <p class="text-xs mb-2">
+                                        @php
+                                            $features = '';
+                                            foreach ($item->options['features'] as $feature) {
+                                                $features = $features. ' | '. $feature;
+                                            }
+                                        @endphp
+                                        {{substr($features,2)}}
+                                    </p>
+                                @endif
 
                                 <button wire:click="remove('{{$item->rowId}}')" class="bg-red-100 hover:bg-red-200 text-red-800 text-xs font-semibold rounded px-2.5 py-0.5">
                                     <i class="fa-solid fa-xmark"></i>

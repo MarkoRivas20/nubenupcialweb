@@ -21,7 +21,9 @@ class CheckoutController extends Controller implements HasMiddleware
     public function index(){
 
         Cart::instance('shopping');
-        $content = Cart::content()->filter(function ($item){
+        $content = Cart::content()->filter(function($item){
+            return $item->options['status'] == true;
+        })->filter(function ($item){
             return $item->qty <= $item->options['stock'];
         });
 
@@ -81,7 +83,9 @@ class CheckoutController extends Controller implements HasMiddleware
     public function buy(){
 
         Cart::instance('shopping');
-        $content = Cart::content()->filter(function ($item){
+        $content = Cart::content()->filter(function($item){
+            return $item->options['status'] == true;
+        })->filter(function ($item){
             return $item->qty <= $item->options['stock'];
         });
 
@@ -100,7 +104,9 @@ class CheckoutController extends Controller implements HasMiddleware
 
     protected function createOrder($payment_method, $payment_id, $total){
         Cart::instance('shopping');
-        $content = Cart::content()->filter(function ($item){
+        $content = Cart::content()->filter(function($item){
+            return $item->options['status'] == true;
+        })->filter(function ($item){
             return $item->qty <= $item->options['stock'];
         });
 

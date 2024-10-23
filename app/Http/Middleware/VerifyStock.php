@@ -24,7 +24,8 @@ class VerifyStock
             $variant = Variant::where('sku',$options['sku'])->first();
 
             $options['stock'] = $variant->stock;
-
+            $options['status'] = $variant->product->status;
+            
             Cart::update($item->rowId, [
                 'options' => $options
             ]);

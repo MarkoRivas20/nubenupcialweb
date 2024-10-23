@@ -19,7 +19,7 @@
                                     </span>
                                 </label>
 
-                                <div x-cloak x-show="pago == 1"  class="p-4 bg-gray-100 flex justify-center border-t border-gray-400">
+                                <div x-show="pago == 1"  class="p-4 bg-gray-100 flex justify-center border-t border-gray-400">
                                     <div>
                                         <p>1. Pago por depósito o transferencia bancaria:</p>
                                         <p>- BCP soles: 189-156546251-98</p>
@@ -44,7 +44,7 @@
                                     <i class="h-6 ml-auto fa-solid fa-credit-card"></i>
                                 </label>
 
-                                <div x-show="pago == 2" class="p-4 bg-gray-100 text-center border-t border-gray-400">
+                                <div x-cloak x-show="pago == 2" class="p-4 bg-gray-100 text-center border-t border-gray-400">
                                     <i class="fa-regular fa-credit-card text-9xl"></i>
                                     <p class="mt-2">
                                         Luego de hacer click en "Pagar ahora", se abrirá el checkout de Niubiz para completar tu compra de forma segura
@@ -74,6 +74,17 @@
                                     <p>
                                         {{$item->name}}
                                     </p>
+                                    @if ($item->options['features'])
+                                        <p class="text-xs mt-2">
+                                            @php
+                                                $features = '';
+                                                foreach ($item->options['features'] as $feature) {
+                                                    $features = $features. ' | '. $feature;
+                                                }
+                                            @endphp
+                                            {{substr($features,2)}}
+                                        </p>
+                                    @endif
                                 </div>
                                 <div class="flex-shrink-0">
                                     <p>
@@ -107,16 +118,17 @@
                     </div>
 
                     <div>
-                        <div x-show="pago == 2">
-                            <button onclick="VisanetCheckout.open()" class="btn btn-blue w-full">
-                                Finalizar Compra
-                            </button>
-                        </div>
                         <div x-show="pago == 1">
                             <button onclick="confirmBuy()" class="btn btn-blue w-full">
                                 Finalizar Compra
                             </button>
                         </div>
+                        <div x-cloak x-show="pago == 2">
+                            <button onclick="VisanetCheckout.open()" class="btn btn-blue w-full">
+                                Finalizar Compra
+                            </button>
+                        </div>
+                        
                         
 
                     </div>

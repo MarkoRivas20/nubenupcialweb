@@ -53,6 +53,7 @@ class AddToCart extends Component
                 'image' => $this->product->image,
                 'sku' => $this->variant->sku,
                 'stock' => $this->variant->stock,
+                'status' => $this->product->status,
                 'features' => Feature::whereIn('id', $this->selectedFeatures)->pluck('description','id')->toArray()
             ]
         ]);

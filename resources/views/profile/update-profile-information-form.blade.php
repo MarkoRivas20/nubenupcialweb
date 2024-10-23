@@ -59,6 +59,36 @@
             <x-input-error for="name" class="mt-2" />
         </div>
 
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="last_name" value="Apellido" />
+            <x-input id="last_name" type="text" class="mt-1 block w-full" wire:model="state.last_name" required autocomplete="last_name" />
+            <x-input-error for="last_name" class="mt-2" />
+        </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="document_type" value="Tipo de Documento" />
+            <x-select class="w-full" id="document_type" name="document_type" wire:model="state.document_type">
+                @foreach (\App\Enums\TypeOfDocuments::cases() as $item)
+                    <option value="{{$item->value}}">
+                        {{$item->name}}
+                    </option>
+                @endforeach
+            </x-select>
+            <x-input-error for="document_type" class="mt-2" />
+        </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="document" value="Documento" />
+            <x-input id="document" type="text" class="mt-1 block w-full" wire:model="state.document" required autocomplete="document" />
+            <x-input-error for="document" class="mt-2" />
+        </div>
+
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="phone" value="Celular" />
+            <x-input id="phone" type="text" class="mt-1 block w-full" wire:model="state.phone" required autocomplete="phone" />
+            <x-input-error for="phone" class="mt-2" />
+        </div>
+
         <!-- Email -->
         <div class="col-span-6 sm:col-span-4">
             <x-label for="email" value="{{ __('Email') }}" />

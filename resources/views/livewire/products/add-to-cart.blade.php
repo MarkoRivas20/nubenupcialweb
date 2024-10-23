@@ -3,7 +3,7 @@
     stock: @entangle('stock')
 }">
     <h1 class="text-xl text-gray-600 mb-3">
-        {{ $product->name }} <span x-show="stock == 0" class="text-xs text-red-500 font-semibold">(Producto agotado)</span>
+        {{ $product->name }} <span x-cloak x-show="stock == 0" class="text-xs text-red-500 font-semibold">(Producto agotado)</span>
     </h1>
 
     <p class="font-semibold text-2xl text-gray-600 mb-4">

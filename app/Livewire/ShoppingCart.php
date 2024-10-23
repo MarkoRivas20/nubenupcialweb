@@ -15,6 +15,8 @@ class ShoppingCart extends Component
     #[Computed()]
     public function subtotal(){
         return Cart::content()->filter(function($item){
+            return $item->options['status'] == true;
+        })->filter(function($item){
             return $item->qty <= $item->options['stock'];
         })->sum(function($item){
             return $item->subtotal;
