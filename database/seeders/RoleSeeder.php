@@ -2,18 +2,23 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
-class PermissionSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $permissions = [
+        $admin = Role::create([
+            'name' => 'admin',
+        ]);
+
+        $admin->syncPermissions([
             'access dashboard',
             'manage options',
             'manage categories',
@@ -25,12 +30,13 @@ class PermissionSeeder extends Seeder
             'manage templates',
             'manage sections',
             'manage invitations'
-        ];
+        ]);
 
-        foreach ($permissions as $permission) {
-            Permission::create([
-                'name' => $permission,
-            ]);
-        }
+        $user = User::find(1);
+        $user->assignRole('admin');
+
+        Role::create([
+            'name' => 'user'
+        ]);
     }
 }

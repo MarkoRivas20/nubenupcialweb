@@ -8,10 +8,17 @@ use App\Models\Invitation;
 use App\Models\Section;
 use App\Models\Template;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Str;
 
-class InvitationController extends Controller
+class InvitationController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'can:manage invitations',
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

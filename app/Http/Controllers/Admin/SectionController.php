@@ -6,10 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Section;
 use App\Models\Template;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class SectionController extends Controller
+class SectionController extends Controller implements HasMiddleware
 {
-   
+    public static function middleware(): array
+    {
+        return [
+            'can:manage sections',
+        ];
+    }
     /**
      * Show the form for creating a new resource.
      */

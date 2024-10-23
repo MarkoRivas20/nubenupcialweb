@@ -7,6 +7,15 @@
             'active' => request()->routeIs('admin.dashboard')
         ],
         [
+            'header' => 'Administrar usuarios',
+        ],
+        [
+            'icon' => 'fa-solid fa-user',
+            'name' => 'Usuarios',
+            'route' => route('admin.users.index'),
+            'active' => request()->routeIs('admin.users.*')
+        ],
+        [
             'header' => 'Administrar página',
         ],
         [
@@ -34,16 +43,19 @@
             'active' => request()->routeIs('admin.covers.*')
         ],
         [
-            'icon' => 'fa-solid fa-envelope',
-            'name' => 'Invitaciones',
-            'route' => route('admin.invitations.index'),
-            'active' => request()->routeIs('admin.invitations.*')
+            'header' => 'Administrar productos',
         ],
         [
             'icon' => 'fa-solid fa-file',
             'name' => 'Plantillas',
             'route' => route('admin.templates.index'),
             'active' => request()->routeIs('admin.templates.*') || request()->routeIs('admin.sections.*')
+        ],
+        [
+            'icon' => 'fa-solid fa-envelope',
+            'name' => 'Invitaciones',
+            'route' => route('admin.invitations.index'),
+            'active' => request()->routeIs('admin.invitations.*')
         ],
         [
             'header' => 'Administrar ordenes',
