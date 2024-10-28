@@ -14,6 +14,7 @@ class OrderTable extends DataTableComponent
 
     public $openModalOrder = false;
     public $order = [];
+    public $coupon = [];
 
     public function configure(): void
     {
@@ -84,6 +85,12 @@ class OrderTable extends DataTableComponent
         ];
     }
 
+    public function markAsPending(Order $order){
+
+        $order->status = OrderStatus::Pending;
+        $order->save();
+    }
+
     public function markAsProcessing(Order $order){
 
         $order->status = OrderStatus::Processing;
@@ -110,6 +117,10 @@ class OrderTable extends DataTableComponent
     public function showOrder(Order $order){
 
         $this->order = [];
+        $this->coupon = [
+            'promo_code' => $order->promo_code,
+            'discount' => $order->discount,
+        ];
 
         foreach ($order->content as $key => $item) {
             $this->order[] = [
@@ -119,7 +130,7 @@ class OrderTable extends DataTableComponent
                 'options' => $item['options']
             ];
         }
-        //dd($this->order);
+        
         $this->openModalOrder = true;
     }
 

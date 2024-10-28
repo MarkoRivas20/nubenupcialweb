@@ -1,7 +1,6 @@
 <x-app-layout>
     <div class="-mb-16 text-gray-700" x-data="{
-        pago: 1
-    }">
+        pago: 1}">
         <div class="grid grid-cols-1 lg:grid-cols-2">
             <div class="col-span-1 bg-white">
                 <div class="lg:max-w-[40rem] py-12 px-4 lg:pr-8 sm:pl-6 lg:pl-8 ml-auto">
@@ -35,22 +34,26 @@
                                 </div>
                             </li>
 
-                            <li>
-                                <label class="p-4 flex items-center">
-                                    <input type="radio" x-model="pago" value="2">
-                                    <span class="ml-2">
-                                        Tarjeta de débito / crédito
-                                    </span>
-                                    <i class="h-6 ml-auto fa-solid fa-credit-card"></i>
-                                </label>
+                            @if ($configuration['paymentMethod'] == 2)
+                                
+                                <li>
+                                    <label class="p-4 flex items-center">
+                                        <input type="radio" x-model="pago" value="2">
+                                        <span class="ml-2">
+                                            Tarjeta de débito / crédito
+                                        </span>
+                                        <i class="h-6 ml-auto fa-solid fa-credit-card"></i>
+                                    </label>
 
-                                <div x-cloak x-show="pago == 2" class="p-4 bg-gray-100 text-center border-t border-gray-400">
-                                    <i class="fa-regular fa-credit-card text-9xl"></i>
-                                    <p class="mt-2">
-                                        Luego de hacer click en "Pagar ahora", se abrirá el checkout de Niubiz para completar tu compra de forma segura
-                                    </p>
-                                </div>
-                            </li>
+                                    <div x-cloak x-show="pago == 2" class="p-4 bg-gray-100 text-center border-t border-gray-400">
+                                        <i class="fa-regular fa-credit-card text-9xl"></i>
+                                        <p class="mt-2">
+                                            Luego de hacer click en "Pagar ahora", se abrirá el checkout de Niubiz para completar tu compra de forma segura
+                                        </p>
+                                    </div>
+                                </li>
+                            @endif
+
 
                             
                         </ul>
@@ -88,7 +91,7 @@
                                 </div>
                                 <div class="flex-shrink-0">
                                     <p>
-                                        S/ {{$item->price}}
+                                        S/ {{number_format($item->price,2)}}
                                     </p>
                                 </div>
                             </li>
@@ -101,21 +104,58 @@
                         </p>
 
                         <p>
-                            S/ {{$subtotal}}
+                            S/ {{number_format($subtotal,2)}}
                         </p>
                     </div>
 
+                    @if ($couponInfo['code'])
+                        
+                        <div class="flex justify-between text-green-500">
+                            <p>
+                                Descuento
+                            </p>
+
+                            <p>
+                                - S/ {{number_format($discount,2)}}
+                            </p>
+                        </div>
+                    @endif
+
                     <hr class="my-3">
 
-                    <div class="flex justify-between mb-4">
-                        <p class="text-lg font-semibold">
+                    <div class="flex justify-between mb-4 text-lg font-semibold">
+                        <p>
                             Total
                         </p>
 
                         <p>
-                            S/ {{$subtotal}}
+                            S/ {{number_format($total,2)}}
                         </p>
                     </div>
+
+                    @if ($configuration['couponStatus'] == 1)
+                        
+                        @if ($couponInfo['code'])
+                            <div class="flex justify-between mb-4 text-lg font-semibold">
+                                <p>
+                                    Cupón: 
+                                </p>
+                        
+                                <div class="flex items-center space-x-3">
+                                    <p class="uppercase">
+                                        {{$couponInfo['code']}}
+                                    </p>
+                                    <a href="/checkout">
+                                        <i class="fa-solid fa-x text-red-500 hover:text-red-700"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        @else
+                            @livewire('coupons.coupon-check', ['showError' => $showError])
+                        @endif
+                    @endif
+
+
 
                     <div>
                         <div x-show="pago == 1">
@@ -123,11 +163,14 @@
                                 Finalizar Compra
                             </button>
                         </div>
-                        <div x-cloak x-show="pago == 2">
-                            <button onclick="VisanetCheckout.open()" class="btn btn-blue w-full">
-                                Finalizar Compra
-                            </button>
-                        </div>
+
+                        @if ($configuration['paymentMethod'] == 2)
+                            <div x-cloak x-show="pago == 2">
+                                <button onclick="VisanetCheckout.open()" class="btn btn-blue w-full">
+                                    Finalizar Compra
+                                </button>
+                            </div>
+                        @endif
                         
                         
 
@@ -170,7 +213,7 @@
         </div>
     </div>
 
-    <form action="{{route('checkout.buy')}}" method="POST" id="buy-form">
+    <form action="{{route('checkout.buy',$couponInfo['code'])}}" method="POST" id="buy-form" class="hidden">
         @csrf
     </form>
 
@@ -183,7 +226,9 @@
             document.addEventListener('DOMContentLoaded', function(){
 
                 let purchasenumber = Math.floor(Math.random() * 1000000000);
-                let amount = {{$subtotal}}
+                let amount = {{$total}}
+                let code = "{{$couponInfo['code']}}"
+                let discount = {{$discount}}
 
                 VisanetCheckout.configure({
                 sessiontoken: '{{$session_token}}',
@@ -195,7 +240,7 @@
                 timeouturl:'about:blank',
                 merchantlogo:'img/comercio.png',
                 formbuttoncolor:'#000000',
-                action:"{{route('checkout.paid')}}?amount="+amount+"&purchaseNumber="+purchasenumber,
+                action:"{{route('checkout.paid')}}?amount="+amount+"&purchaseNumber="+purchasenumber+"&coupondiscount="+discount+"&couponcode="+code,
                 complete: function(params) {
                 alert(JSON.stringify(params));
                 }

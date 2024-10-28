@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Configuration;
 use App\Models\Product;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -47,5 +48,13 @@ class DatabaseSeeder extends Seeder
         ]);
         
         Product::factory(20)->create();
+
+        Configuration::create([
+            'content' => [
+                'tax' => 18.00,
+                'paymentMethod' => 1,
+                'couponStatus' => 1
+            ]
+        ]);
     }
 }

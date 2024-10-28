@@ -18,6 +18,9 @@ return new class extends Migration
             $table->integer('payment_method');
             $table->string('payment_id')->nullable();
             $table->float('total');
+            $table->float('tax');
+            $table->float('discount')->default(0.00);
+            $table->string('promo_code')->nullable();
             $table->integer('status')->default(1);
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

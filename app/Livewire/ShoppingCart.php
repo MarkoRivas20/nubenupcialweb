@@ -2,14 +2,19 @@
 
 namespace App\Livewire;
 
+use App\Models\Configuration;
 use CodersFree\Shoppingcart\Facades\Cart;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class ShoppingCart extends Component
 {
+    //protected $configuration;
+
     public function mount(){
+        
         Cart::instance('shopping');
+
     }
 
     #[Computed()]
@@ -22,6 +27,17 @@ class ShoppingCart extends Component
             return $item->subtotal;
         });
     }
+/*
+    #[Computed()]
+    public function tax(){
+        return Cart::content()->filter(function($item){
+            return $item->options['status'] == true;
+        })->filter(function($item){
+            return $item->qty <= $item->options['stock'];
+        })->sum(function($item){
+            return ($item->subtotal * $this->configuration->content['tax'])/100.00;
+        });
+    }*/
 
     public function increase($rowId){
         Cart::instance('shopping');
@@ -80,6 +96,7 @@ class ShoppingCart extends Component
 
     public function render()
     {
+        //$this->configuration = Configuration::find(1);
         return view('livewire.shopping-cart');
     }
 }

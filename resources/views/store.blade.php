@@ -33,9 +33,16 @@
                 
                     <div class="p-4">
                         <h1 class="text-lg font-bold text-gray-700 line-clamp-2 min-h-[56px] mb-2">{{$product->name}}</h1>
-                        <p class="text-gray-600 mb-4">
-                            S/ {{$product->price}}
-                        </p>
+                        
+                        
+                        <div class="relative">
+                            @if ($product->options->count())
+                                <span class="absolute text-xs -top-4 left-0 inline-flex">Desde</span>
+                            @endif
+                            <p class="text-gray-600 mb-4">
+                                S/ {{$product->price}}
+                            </p>
+                        </div>
 
                         <a href="{{route('products.show',$product)}}" class="btn btn-blue block w-full text-center">
                             Ver más

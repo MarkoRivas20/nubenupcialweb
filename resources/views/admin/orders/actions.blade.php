@@ -4,6 +4,11 @@
     </button>
     
     @switch($order->status)
+        @case(\App\Enums\OrderStatus::PendingPayment)
+            <button wire:click="markAsPending({{$order->id}})" class="underline text-blue-500 hover:no-underline">
+                Pago verificado
+            </button>
+        @break
         @case(\App\Enums\OrderStatus::Pending)
             <button wire:click="markAsProcessing({{$order->id}})" class="underline text-blue-500 hover:no-underline">
                 Listo para procesar

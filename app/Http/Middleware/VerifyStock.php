@@ -22,13 +22,21 @@ class VerifyStock
         foreach (Cart::content() as $item) {
             $options = $item->options;
             $variant = Variant::where('sku',$options['sku'])->first();
+    
+            if ($variant) {
+                
+                $options['stock'] = $variant->stock;
+                $options['status'] = $variant->product->status;
+                
+                Cart::update($item->rowId, [
+                    'options' => $options
+                ]);
 
-            $options['stock'] = $variant->stock;
-            $options['status'] = $variant->product->status;
-            
-            Cart::update($item->rowId, [
-                'options' => $options
-            ]);
+            }else{
+
+                Cart::remove($item->rowId);
+            }
+
         }
         return $next($request);
     }

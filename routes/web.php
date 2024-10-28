@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
 use App\Models\Product;
@@ -15,14 +16,17 @@ Route::get('categories/{category}',[CategoryController::class, 'show'])->name('c
 Route::get('products/{product}',[ProductController::class,'show'])->name('products.show');
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 
-Route::get('checkout',[CheckoutController::class,'index'])->middleware('auth')->name('checkout.index');
+Route::get('checkout/{coupon?}',[CheckoutController::class,'index'])->middleware('auth')->name('checkout.index');
 
 Route::post('checkout/paid', [CheckoutController::class,'paid'])->name('checkout.paid');
-Route::post('checkout/buy', [CheckoutController::class,'buy'])->name('checkout.buy');
+Route::post('checkout/buy/{coupon?}', [CheckoutController::class,'buy'])->middleware('auth')->name('checkout.buy');
 
-Route::get('checkout/successful', function(){
+Route::get('checkout/pay/successful', function(){
     return view('checkout.successful');
 })->name('checkout.successful');
+
+Route::get('orders',[OrderController::class,'index'])->middleware('auth')->name('orders.index');
+Route::get('orders/{order}',[OrderController::class,'show'])->middleware('auth')->name('orders.show');
 
 Route::get('404', function(){
     return view('404');

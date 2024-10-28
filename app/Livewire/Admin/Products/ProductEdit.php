@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Products;
 
 use App\Models\Category;
+use App\Models\Configuration;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -19,7 +20,7 @@ class ProductEdit extends Component
 
     public function mount($product){
 
-        $this->productEdit = $product->only('sku','name','description', 'image_path','price','stock','status', 'category_id');
+        $this->productEdit = $product->only('sku','name','description', 'image_path','price','status', 'category_id');
     
         $this->categories = Category::all();
     }

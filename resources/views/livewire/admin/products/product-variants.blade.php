@@ -221,6 +221,12 @@
                 <x-validation-errors for="variantEdit.sku"></x-validation-error>
             </div>
 
+            <div class="mb-4">
+                <x-label class="mb-1">Precio</x-label>
+                <x-input type="number" step="0.01" wire:model="variantEdit.price" class="w-full" placeholder="Por favor, introduzca el precio del producto"/>
+                <x-validation-errors for="variantEdit.price"></x-validation-error>
+            </div>
+
             <div>
                 <x-label class="mb-1">Stock</x-label>
                 <x-input wire:model="variantEdit.stock" class="w-full"/>

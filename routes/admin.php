@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ConfigurationController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CoverController;
 use App\Http\Controllers\Admin\InvitationController;
 use App\Http\Controllers\Admin\OptionController;
@@ -29,6 +31,10 @@ Route::get('orders',[OrderController::class,'index'])->middleware('can:manage or
 Route::get('users',[UserController::class,'index'])->middleware('can:manage users')->name('users.index');
 Route::get('users/{user}/edit',[UserController::class,'edit'])->middleware('can:manage users')->name('users.edit');
 Route::put('users/{user}/update',[UserController::class,'update'])->middleware('can:manage users')->name('users.update');
+
+Route::get('configurations/{configuration}/edit', [ConfigurationController::class, 'edit'])->middleware('can:manage configurations')->name('configurations.edit');
+
+Route::resource('coupons', CouponController::class)->middleware('can:manage coupons');
 
 Route::resource('invitations', InvitationController::class)->middleware('can:manage invitations');
 Route::resource('templates', TemplateController::class)->middleware('can:manage templates');

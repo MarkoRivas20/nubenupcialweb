@@ -7,6 +7,15 @@
             'active' => request()->routeIs('admin.dashboard')
         ],
         [
+            'header' => 'Administrar configuración',
+        ],
+        [
+            'icon' => 'fa-solid fa-gear',
+            'name' => 'Configuración',
+            'route' => route('admin.configurations.edit',1),
+            'active' => request()->routeIs('admin.configurations.*')
+        ],
+        [
             'header' => 'Administrar usuarios',
         ],
         [
@@ -35,6 +44,12 @@
             'name' => 'Productos',
             'route' => route('admin.products.index'),
             'active' => request()->routeIs('admin.products.*')
+        ],
+        [
+            'icon' => 'fa-solid fa-ticket-simple',
+            'name' => 'Cupones',
+            'route' => route('admin.coupons.index'),
+            'active' => request()->routeIs('admin.coupons.*')
         ],
         [
             'icon' => 'fa-solid fa-images',

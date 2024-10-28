@@ -10,6 +10,7 @@ class VariantObserver
 
         if ($variant->product->options->count() == 0) {
             $variant->sku = $variant->product->sku;
+            $variant->price = $variant->product->price;
             $variant->save();
 
             return;

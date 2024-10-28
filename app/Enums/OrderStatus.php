@@ -4,11 +4,12 @@ namespace App\Enums;
 
 enum OrderStatus: int
 {
-    case Pending = 1;
-    case Processing = 2;
-    case Completed = 3;
-    case Cancelled = 4;
-    case Refunded = 5;
+    case PendingPayment = 1;
+    case Pending = 2;
+    case Processing = 3;
+    case Completed = 4;
+    case Cancelled = 5;
+    case Refunded = 6;
 }
 
 ?>

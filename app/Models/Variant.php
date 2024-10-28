@@ -14,7 +14,8 @@ class Variant extends Model
     protected $fillable = [
         'sku',
         'product_id',
-        'stock'
+        'stock',
+        'price'
     ];
 
     protected function image(): Attribute{

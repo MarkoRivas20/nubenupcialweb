@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Products;
 
+use App\Models\Configuration;
 use App\Models\Feature;
 use App\Models\Option;
 use App\Models\Variant;
@@ -11,8 +12,6 @@ use Livewire\Component;
 
 class ProductVariants extends Component
 {
-
-    public $prueba;
 
     public $product;
 
@@ -33,6 +32,7 @@ class ProductVariants extends Component
         'open' => false,
         'id' => null,
         'stock' => null,
+        'price' => null,
         'sku' => null
     ];
 
@@ -48,7 +48,6 @@ class ProductVariants extends Component
         ];
     }
 
-    
     #[Computed()]
     public function options(){
         return Option::whereDoesntHave('products', function($query){
@@ -177,7 +176,7 @@ class ProductVariants extends Component
             }
 
             $variant = Variant::create([
-                'product_id' => $this->product->id,
+                'product_id' => $this->product->id
             ]);
     
             $variant->features()->attach($combinacion);
@@ -243,13 +242,15 @@ class ProductVariants extends Component
             'open' => true,
             'id' => $variant->id,
             'stock' => $variant->stock,
+            'price' => $variant->price,
             'sku' => $variant->sku
         ];
     }
 
     public function updateVariant(){
         $this->validate([
-            'variantEdit.stock' => 'required|numeric',
+            'variantEdit.stock' => 'required|numeric|min:0',
+            'variantEdit.price' => 'required|numeric|min:0',
             'variantEdit.sku' => 'required'
         ]);
 
@@ -257,6 +258,7 @@ class ProductVariants extends Component
 
         $variant->update([
             'stock' => $this->variantEdit['stock'],
+            'price' => $this->variantEdit['price'],
             'sku' => $this->variantEdit['sku']
         ]);
 

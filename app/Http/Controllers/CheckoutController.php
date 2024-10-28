@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Configuration;
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Models\Variant;
 use CodersFree\Shoppingcart\Facades\Cart;
@@ -18,14 +20,17 @@ class CheckoutController extends Controller implements HasMiddleware
             'auth',
         ];
     }
-    public function index(){
+    public function index($coupon = null){
 
-        Cart::instance('shopping');
-        $content = Cart::content()->filter(function($item){
-            return $item->options['status'] == true;
-        })->filter(function ($item){
-            return $item->qty <= $item->options['stock'];
-        });
+        $couponInfo  = [
+            'code' => '',
+            'type'=> '',
+            'value' => ''
+        ];
+        $showError = false;
+
+        $content = $this->getContent();
+        $configuration = Configuration::find(1)->first()->content;
 
         if ($content->count() == 0) {
             return redirect()->route('cart.index');
@@ -34,11 +39,32 @@ class CheckoutController extends Controller implements HasMiddleware
         $subtotal = $content->sum(function($item){
             return $item->subtotal;
         });
-        
-        $access_token = $this->generateAccessToken();
-        $session_token = $this->generateSessionToken($access_token, $subtotal);
 
-        return view('checkout.index', compact('content','subtotal','session_token'));
+        $total = $subtotal;
+        $discount = 0.00;
+        
+        if ($coupon && $configuration['couponStatus'] == 1) {
+            $couponValidate = $this->validateCoupon($coupon);
+            if ($couponValidate) {
+                
+                $couponInfo = [
+                    'code' => $couponValidate->code,
+                    'type'=> $couponValidate->type,
+                    'value' => $couponValidate->value
+                ];
+
+                $discount = $this->getDiscount($couponInfo['type'], $couponInfo['value'], $subtotal);
+                $total = round( $subtotal - $discount, 2);
+
+            }else{
+                $showError = true;
+            }
+        }
+
+        $access_token = $this->generateAccessToken();
+        $session_token = $this->generateSessionToken($access_token, $total);
+
+        return view('checkout.index', compact('content','subtotal','total','discount','session_token','couponInfo', 'showError','configuration'));
     }
 
     public function generateAccessToken(){
@@ -55,17 +81,17 @@ class CheckoutController extends Controller implements HasMiddleware
 
     }
 
-    public function generateSessionToken($access_token, $subtotal){
+    public function generateSessionToken($access_token, $total){
 
         $merchant_id = config('services.niubiz.merchant_id');
         $url_api = config('services.niubiz.url_api') . "/api.ecommerce/v2/ecommerce/token/session/{$merchant_id}";
-        
+
         $response = Http::withHeaders([
             'Authorization' => $access_token,
             'Content-Type' => 'application/json', 
         ])->post($url_api, [
             'channel' => 'web',
-            'amount' => $subtotal,
+            'amount' => $total,
             'antifraud' => [
                 'client_ip' => request()->ip(),
                 'merchantDefineData' => [
@@ -80,48 +106,109 @@ class CheckoutController extends Controller implements HasMiddleware
         return $response['sessionKey'];
     }
 
-    public function buy(){
+    public function validateCoupon($code){
+        $coupon = Coupon::where('code', $code)
+        ->where('status', true)
+        ->where('stock', '>', 0)
+        ->whereDate('start_at', '<=', now())
+        ->where(function($query){
+            $query->whereDate('end_at', '>=', now())
+                ->orWhereNull('end_at');
+        })->first();
 
-        Cart::instance('shopping');
-        $content = Cart::content()->filter(function($item){
-            return $item->options['status'] == true;
-        })->filter(function ($item){
-            return $item->qty <= $item->options['stock'];
-        });
+        if ($coupon) {
+            return $coupon;
+        }else{
+            return null;
+        }
+    }
 
-        $subtotal = $content->sum(function($item){
+    public function buy($coupon = null){
+
+        $content = $this->getContent();
+
+        $total = $content->sum(function($item){
             return $item->subtotal;
         });
 
-        $this->createOrder(1, '', $subtotal);
+        $discount = 0.00;
 
-        session()->flash('digitalWallet',[
+        if ($coupon) {
+            $couponValidate = $this->validateCoupon($coupon);
+            $discount = $this->getDiscount($couponValidate->type, $couponValidate->value, $total);
+            $total = round( $total - $discount, 2);
+        }
+
+        $this->createOrder(1, '', $total, $couponValidate->code, $discount);
+
+        return redirect()->route('checkout.successful')->with('digitalWallet',[
             'response' => 'Pronto un colaborador se comunicará contigo para poder brindarte el número al cual realizar la transferencia',
         ]);
-
-        return redirect()->route('checkout.successful');
     }
 
-    protected function createOrder($payment_method, $payment_id, $total){
+    protected function getDiscount($couponType, $couponValue, $mount){
+        switch ($couponType) {
+            case 1:
+                return round((($mount * $couponValue)/100),2);
+                break;
+            case 2:
+                return $couponValue;
+                break;
+            default:
+                return 0.00;
+                break;
+        }
+    }
+
+    protected function getContent(){
         Cart::instance('shopping');
-        $content = Cart::content()->filter(function($item){
+        return Cart::content()->filter(function($item){
             return $item->options['status'] == true;
         })->filter(function ($item){
             return $item->qty <= $item->options['stock'];
         });
+    }
+
+    protected function createOrder($payment_method, $payment_id, $subtotal, $couponCode, $couponDiscount){
+        
+        $content = $this->getContent();
+
+        $configuration = Configuration::find(1);
+        $tax = (($subtotal * $configuration->content['tax']) /100.00);
+
+        switch ($payment_method) {
+            case 1:
+                $status = 1;
+                break;
+            case 2:
+                $status = 2;
+                break;
+            
+            default:
+                $status = 1;
+                break;
+        }
 
         Order::create([
             'content' => $content,
             'payment_method' => $payment_method,
             'payment_id' => $payment_id,
-            'total' => $total,
+            'total' => $subtotal,
+            'discount' => $couponDiscount,
+            'promo_code' => $couponCode,
+            'tax' => $tax,
+            'status' => $status,
             'user_id' => auth()->id()
         ]);
 
         foreach ($content as $item) {
             Variant::where('sku',$item->options['sku'])->decrement('stock', $item->qty);
-        
+            
             Cart::remove($item->rowId);
+        }
+
+        if($couponCode){
+            Coupon::where('code',$couponCode)->decrement('stock', 1);
         }
 
         Cart::destroy();
@@ -149,16 +236,14 @@ class CheckoutController extends Controller implements HasMiddleware
             ]
         ])->json();
 
-        session()->flash('niubiz',[
-            'response' => $response,
-            'purchaseNumber' => $request->purchaseNumber,
-        ]);
-
         if (isset($response['dataMap']) && $response['dataMap']['ACTION_CODE'] == '000') {
             
-            $this->createOrder(2, $response['dataMap']['TRANSACTION_ID'], $request->amount);
+            $this->createOrder(2, $response['dataMap']['TRANSACTION_ID'], $request->amount,$request->couponcode,$request->coupondiscount);
 
-            return redirect()->route('checkout.successful');
+            return redirect()->route('checkout.successful')->with('niubiz',[
+                'response' => $response,
+                'purchaseNumber' => $request->purchaseNumber,
+            ]);
         }
         
         return redirect()->route('checkout.index');

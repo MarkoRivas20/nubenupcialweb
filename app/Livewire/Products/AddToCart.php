@@ -12,6 +12,7 @@ class AddToCart extends Component
     public $product;
     public $variant;
     public $stock;
+    public $price;
     public $qty = 1;
 
     public $selectedFeatures = [];
@@ -48,7 +49,7 @@ class AddToCart extends Component
             'id' => $this->product->id,
             'name' => $this->product->name,
             'qty' => $this->qty,
-            'price' => $this->product->price,
+            'price' => $this->variant->price,
             'options' => [
                 'image' => $this->product->image,
                 'sku' => $this->variant->sku,
@@ -81,6 +82,7 @@ class AddToCart extends Component
         })->first();
 
         $this->stock = $this->variant->stock;
+        $this->price = $this->variant->price;
         $this->qty = 1;
     }
 

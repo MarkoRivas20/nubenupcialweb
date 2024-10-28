@@ -11,16 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('variants', function (Blueprint $table) {
+        Schema::create('coupons', function (Blueprint $table) {
             $table->id();
-            $table->string('sku')->nullable();
-            //$table->string('image_path')->nullable();
-
-            $table->integer('stock')->unsigned()->default(0);
-            $table->float('price')->default(0.00);
-
-            $table->foreignId('product_id')->constrained();
-            
+            $table->string('code')->unique();
+            $table->integer('type');
+            $table->double('value');
+            $table->boolean('status');
+            $table->integer('stock');
+            $table->datetime('start_at');
+            $table->datetime('end_at')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('variants');
+        Schema::dropIfExists('coupons');
     }
 };

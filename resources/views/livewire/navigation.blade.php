@@ -64,6 +64,13 @@
                                     Mi perfil
                                 </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
+                                @can('manage orders users')
+                                    
+                                    <x-dropdown-link href="{{route('orders.index')}}">
+                                        Mis ordenes
+                                    </x-dropdown-link>
+                                    <div class="border-t border-gray-200"></div>
+                                @endcan
                                 <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf
     

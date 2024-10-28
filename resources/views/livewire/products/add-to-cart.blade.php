@@ -7,7 +7,7 @@
     </h1>
 
     <p class="font-semibold text-2xl text-gray-600 mb-4">
-        S/ {{ $product->price }}
+        S/ {{number_format($price,2) }}
     </p>
 
     <div class="flex items-center space-x-6 mb-6" >

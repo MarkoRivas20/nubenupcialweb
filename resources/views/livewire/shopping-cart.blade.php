@@ -53,7 +53,7 @@
                                 </button>
                             </div>
                             <p>
-                                S/ {{$item->price}}
+                                S/ {{number_format($item->price,2)}}
                             </p>
                             <div class="ml-auto space-x-3">
                                 <button class="btn btn-blue" 
@@ -82,15 +82,36 @@
                 </ul>
             </div>
         </div>
+
         <div class="lg:col-span-2">
             <div class="card">
                 <div class="flex justify-between font-semibold mb-2">
                     <p>
-                        Total:
+                        Sub Total:
                     </p>
 
                     <p>
-                        S/ {{$this->subtotal}}
+                        S/ {{number_format($this->subtotal,2)}}
+                    </p>
+                </div>
+
+                {{-- <div class="flex justify-between font-semibold mb-2">
+                    <p>
+                        I.G.V: <span class="text-xs font-normal">({{$this->configuration->content['tax']}} %)</span>
+                    </p>
+
+                    <p>
+                        S/ {{number_format($this->tax,2)}}
+                    </p>
+                </div> --}}
+
+                <div class="flex justify-between font-semibold mb-2">
+                    <p>
+                        Total: <span class="text-xs text-gray-500">(incluye I.G.V.)</span>
+                    </p>
+
+                    <p>
+                        S/ {{number_format($this->subtotal,2)}}
                     </p>
                 </div>
 

@@ -21,6 +21,8 @@ class PermissionSeeder extends Seeder
             'manage covers',
             'manage orders',
             'manage users',
+            'manage configurations',
+            'manage coupons',
             'manage orders users',
             'manage templates',
             'manage sections',
