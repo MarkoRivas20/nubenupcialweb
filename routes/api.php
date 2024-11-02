@@ -9,3 +9,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/sort/covers', [SortController::class, 'covers'])->name('api.sort.covers');
+
+Route::post('/sort/sections', [SortController::class, 'sections'])->name('api.sort.sections');

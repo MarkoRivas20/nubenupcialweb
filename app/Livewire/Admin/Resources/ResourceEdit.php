@@ -1,39 +1,36 @@
 <?php
 
-namespace App\Livewire\Admin\Products;
+namespace App\Livewire\Admin\Resources;
 
 use App\Models\Image;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class ProductImages extends Component
+class ResourceEdit extends Component
 {
     use WithFileUploads;
 
-    public $product;
-    public $openModalImages = false;
+    public $resource;
+ 
     public $photos = [];
 
-    public function uploadPhotos(){
+    public function uploadFiles(){
 
         $this->validate([
-            'photos.*' => 'image|max:1024', // 1MB Max
+            'photos.*' => 'max:1024', // 1MB Max
         ]);
 
         foreach ($this->photos as $photo) {
 
-            $url = Storage::put('/photos', $photo);
+            $url = Storage::put('/resources', $photo);
 
-            $this->product->images()->create([
+            $this->resource->images()->create([
                 'file_path' => $url
             ]);
 
         }
-
-        $this->openModalImages = false;
         $this->photos = [];
-       
     }
 
     public function DeleteImage(Image $image){
@@ -43,7 +40,6 @@ class ProductImages extends Component
 
     public function render()
     {
-
-        return view('livewire.admin.products.product-images');
+        return view('livewire.admin.resources.resource-edit');
     }
 }

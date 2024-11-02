@@ -61,6 +61,12 @@
             'header' => 'Administrar productos',
         ],
         [
+            'icon' => 'fa-solid fa-box-open',
+            'name' => 'Recursos',
+            'route' => route('admin.resources.index'),
+            'active' => request()->routeIs('admin.resources.*')
+        ],
+        [
             'icon' => 'fa-solid fa-file',
             'name' => 'Plantillas',
             'route' => route('admin.templates.index'),

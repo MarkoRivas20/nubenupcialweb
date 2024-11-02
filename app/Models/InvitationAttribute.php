@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class InvitationAttribute extends Model
 {
     use HasFactory;
+
+    public $fillable=[
+        'type',
+        'key',
+        'value',
+        'invitation_section_id'
+    ];
+
+    public function section(){
+        return $this->belongsTo(InvitationSection::class);
+    }
 }

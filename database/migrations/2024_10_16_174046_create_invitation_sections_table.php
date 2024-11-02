@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('body');
-            $table->integer('type_background');
-            $table->string('background');
             $table->integer('order');
-            $table->foreignId('invitation_id')->constrained();
+            $table->unsignedBigInteger('invitation_id');
+            $table->foreign('invitation_id')->references('id')->on('invitations');
             $table->timestamps();
         });
     }

@@ -29,27 +29,10 @@
                 </x-label>
                 <x-input class="w-full" placeholder="Ingrese el nombre de la Sección" name="name" value="{{ old('name', $section->name) }}"/>
             </div>
-
-            <div class="mb-4">
-                <x-label class="mb-1">Tipo de Fondo</x-label>
-    
-                <x-select name="type_background" class="w-full" >
-                    <option value="" disabled>Seleccione un tipo de fondo</option>
-                    <option value="1" {{$section->type_background == 1 ? 'selected' : ''}}>Imagen</option>
-                    <option value="2" {{$section->type_background == 2 ? 'selected' : ''}}>Color</option>
-                </x-select>
-            </div>
-
-            <div class="mb-4">
-                <x-label class="mb-2">
-                    Fondo
-                </x-label>
-                <x-input class="w-full" placeholder="Ingrese el valor del fondo" name="background" value="{{ old('background', $section->background) }}"/>
-            </div>
     
             <div class="mb-4">
                 <x-label class="mb-1">Descripción</x-label>
-                <textarea name="body" id="body">{{old('body',$section->body)}}</textarea>
+                <textarea rows="15" name="body" id="body" class="w-full">{{old('body',$section->body)}}</textarea>
             </div>
 
             <div class="flex justify-end">
@@ -73,11 +56,6 @@
 
     @push('js')
         <script>
-            ClassicEditor
-                    .create(document.querySelector('#body'))
-                    .catch(error => {
-                        console.error('Error during initialization of the editor', error);
-                    });
 
             function confirmDelete() {
                 Swal.fire({

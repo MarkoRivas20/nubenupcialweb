@@ -49,7 +49,7 @@
         
             <div class="mb-4" wire:ignore>
                 <x-label class="mb-1">Descripción</x-label>
-                <textarea wire:model="productEdit.description" id="detail">{{$product['description']}}</textarea>
+                <textarea rows="15" wire:model="productEdit.description" id="detail" class="w-full">{{$product['description']}}</textarea>
             </div>
 
             <div class="mb-4">
@@ -91,16 +91,6 @@
 
     @push('js')
         <script>
-            ClassicEditor
-                    .create(document.querySelector('#detail'))
-                    .then(editor => {
-                        editor.model.document.on('change:data', () => {
-                        @this.set('productEdit.description', editor.getData());
-                    })
-                    })
-                    .catch(error => {
-                        console.error('Error during initialization of the editor', error);
-                    });
 
         function confirmDelete() {
                 Swal.fire({

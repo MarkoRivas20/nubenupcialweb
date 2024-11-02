@@ -26,6 +26,7 @@ class RoleSeeder extends Seeder
             'manage covers',
             'manage orders',
             'manage users',
+            'manage resources',
             'manage configurations',
             'manage coupons',
             'manage orders users',

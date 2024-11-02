@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
@@ -27,6 +28,8 @@ Route::get('checkout/pay/successful', function(){
 
 Route::get('orders',[OrderController::class,'index'])->middleware('auth')->name('orders.index');
 Route::get('orders/{order}',[OrderController::class,'show'])->middleware('auth')->name('orders.show');
+
+Route::get('invitations/{invitation}',[InvitationController::class,'show'])->name('invitations.show');
 
 Route::get('404', function(){
     return view('404');

@@ -31,8 +31,6 @@ class SectionController extends Controller implements HasMiddleware
     {
         $request->validate([
             'name' => 'required',
-            'type_background' => 'required|in:1,2',
-            'background' => 'required',
             'body' => 'required',
         ]);
 
@@ -61,8 +59,6 @@ class SectionController extends Controller implements HasMiddleware
     {
         $request->validate([
             'name' => 'required',
-            'type_background' => 'required|in:1,2',
-            'background' => 'required',
             'body' => 'required',
         ]);
 

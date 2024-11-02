@@ -35,7 +35,7 @@
                 <x-label class="mb-1">
                     Imagen
                 </x-label>
-                <input accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" id="photos" name="photos" type="file" wire:model="photos" multiple>
+                <input accept="image/*"  class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300" id="photos" name="photos" type="file" wire:model="photos" multiple >
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG (MAX. 800x400px).</p>
                 <x-input-error for="photos"></x-input-error>
             </div>

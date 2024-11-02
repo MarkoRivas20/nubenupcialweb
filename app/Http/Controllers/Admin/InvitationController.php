@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\Invitation;
+use App\Models\InvitationSection;
 use App\Models\Section;
 use App\Models\Template;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class InvitationController extends Controller implements HasMiddleware
@@ -24,14 +26,6 @@ class InvitationController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        /*$contenido = Section::find(1);
-        $body = $contenido->body;
-        $attributes = Attribute::where('section_id','1')->get();
-
-        foreach ($attributes as $attribute) {
-            $body = str_replace($attribute->key,$attribute->value,$body);
-        }*/
-        //return view('admin.invitations.index', compact('body','attributes'));
         
         return view('admin.invitations.index');
     }
@@ -57,7 +51,8 @@ class InvitationController extends Controller implements HasMiddleware
      */
     public function show(Invitation $invitation)
     {
-        //
+        
+        return view ('admin.invitations.show', compact('invitation'));
     }
 
     /**
@@ -65,7 +60,7 @@ class InvitationController extends Controller implements HasMiddleware
      */
     public function edit(Invitation $invitation)
     {
-        //
+        return view ('admin.invitations.edit', compact('invitation'));
     }
 
     /**
@@ -83,4 +78,10 @@ class InvitationController extends Controller implements HasMiddleware
     {
         //
     }
+
+    public function imageIndex(Invitation $invitation, InvitationSection $section){
+
+        return view('admin.invitations.images.index', compact('section','invitation'));
+    }
+
 }

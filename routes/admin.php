@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\ResourceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function(){
@@ -36,7 +37,11 @@ Route::get('configurations/{configuration}/edit', [ConfigurationController::clas
 
 Route::resource('coupons', CouponController::class)->middleware('can:manage coupons');
 
+Route::get('resources',[ResourceController::class,'index'])->middleware('can:manage resources')->name('resources.index');
+Route::get('resources/{resource}/edit',[ResourceController::class,'edit'])->middleware('can:manage resources')->name('resources.edit');
+
 Route::resource('invitations', InvitationController::class)->middleware('can:manage invitations');
+Route::get('invitations/{invitation}/section/{section}/images', [InvitationController::class,'imageIndex'])->middleware('can:manage invitations')->name('invitations.images.index')->scopeBindings();
 Route::resource('templates', TemplateController::class)->middleware('can:manage templates');
 Route::put('templates/{template}/disabled', [TemplateController::class, 'disabled'])->middleware('can:manage templates')->name('templates.disabled');
 

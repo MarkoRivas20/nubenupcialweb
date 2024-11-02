@@ -16,7 +16,8 @@ return new class extends Migration
             $table->integer('type');
             $table->string('key');
             $table->string('value');
-            $table->foreignId('invitation_sections_id')->constrained();
+            $table->unsignedBigInteger('invitation_section_id');
+            $table->foreign('invitation_section_id')->references('id')->on('invitation_sections');
             $table->timestamps();
         });
     }

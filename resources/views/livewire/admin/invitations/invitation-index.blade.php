@@ -48,10 +48,9 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if ($invitation->status)
-                                            
+                                        
                                         <a href="{{route('admin.invitations.edit', $invitation)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                                        @endif
+                                        
                                     </td>
                                 </tr>
                             @endforeach
@@ -60,9 +59,6 @@
                     </table>
                 </div>
         
-                <div class="mt-4">
-                    {{$invitations->links()}}
-                </div>
             @else
                 <div class="p-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
                     <span class="font-medium">Alerta!</span> Todavia no hay invitaciones registradas.

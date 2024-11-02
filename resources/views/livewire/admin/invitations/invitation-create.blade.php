@@ -1,5 +1,28 @@
 <div>
     <x-validation-errors class="mb-4"/>
+
+    <div class="bg-white rounded-lg shadow mb-4">
+        <div class="bg-gray-100 border-b border-gray-300 rounded-t-lg overflow-auto flex items-center px-6 py-4 uppercase font-semibold justify-between">
+            <span>
+                DATOS DE LA INVITACIÓN
+            </span>
+
+        </div>
+        <div class="px-6 pt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="mb-4">
+                <x-label class="mb-1">Nombre</x-label>
+                <x-input wire:model="invitationName" class="w-full" placeholder="Por favor, introduzca el nombre de la invitación"/>
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Slug</x-label>
+                <x-input wire:model="invitationSlug" class="w-full" placeholder="Por favor, introduzca el slug de la invitación"/>
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Icono</x-label>
+                <input type="file" accept="image/*" wire:model="invitationIcon" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+            </div>
+        </div>
+    </div>
     
     @foreach ($templateSelected as $indexSection=>$section)
     <div class="bg-white rounded-lg shadow mb-4">
@@ -11,27 +34,9 @@
         </div>
 
         <div class="px-6 pt-4">
-            <div class="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <x-label class="mb-2">Tipo de Fondo</x-label>
-        
-                    <x-select class="w-full" wire:model="templateSelected.{{$indexSection}}.type_background">
-                        <option value="" disabled>Seleccione un tipo de fondo</option>
-                        <option value="1">Imagen</option>
-                        <option value="2">Color</option>
-                    </x-select>
-                </div>
-    
-                <div>
-                    <x-label class="mb-2">
-                        Fondo
-                    </x-label>
-                    <x-input class="w-full" placeholder="Ingrese el valor del fondo" wire:model="templateSelected.{{$indexSection}}.background"/>
-                </div>
-            </div>
             <div class="mb-4">
                 <x-label class="mb-1">Descripción</x-label>
-                <textarea class="w-full block" wire:model="templateSelected.{{$indexSection}}.body"></textarea>
+                <textarea rows="15" class="w-full block" wire:model="templateSelected.{{$indexSection}}.body"></textarea>
             </div>
         </div>
 
@@ -51,7 +56,7 @@
                         <i class="fa-solid fa-trash text-red-500 text-sm cursor-pointer hover:text-red-700" wire:click="removeAttribute({{$indexSection}},{{$indexAttribute}})"></i>
                         <x-label >
                             Tipo: 
-                            <x-select class="h-6 py-0 px-2" wire:model="templateSelected.{{$indexSection}}.attributes.{{$indexAttribute}}.type">
+                            <x-select class="h-6 w-48 py-0 px-2" wire:model="templateSelected.{{$indexSection}}.attributes.{{$indexAttribute}}.type">
                                 <option value="" disabled>Seleccione un valor</option>
                                 <option value="1">Texto</option>
                                 <option value="2">Imagen</option>

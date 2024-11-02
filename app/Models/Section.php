@@ -12,8 +12,6 @@ class Section extends Model
     protected $fillable = [
         'name',
         'body',
-        'type_background',
-        'background',
         'template_id'
     ];
 

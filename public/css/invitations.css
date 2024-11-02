@@ -1,0 +1,91 @@
+.h-102{
+    height:32rem;
+}
+.bg-image-responsive-1{
+  background-position: right top; 
+  background-repeat: no-repeat; 
+  background-size: contain; 
+  background-color: #fffdf8; 
+}
+.bg-image-responsive-2{
+    background-position: left center; 
+    background-repeat: no-repeat; 
+    background-size: auto; 
+    background-color: #fffdf8; 
+  }
+  .bg-image-responsive-3{
+    background-position: right center; 
+    background-repeat: no-repeat; 
+    background-size: auto; 
+    background-color: #fffdf8; 
+  }
+  .bg-image-responsive-4{
+    background-position: left center; 
+    background-repeat: no-repeat; 
+    background-size: auto; 
+    background-color: #fffdf8; 
+  }
+  .bg-image-responsive-5{
+    background-position:right center; 
+    background-repeat: no-repeat; 
+    background-size: auto; 
+    background-color: #fffdf8; 
+  }
+  .bg-image-responsive-6{
+    background-position:left bottom; 
+    background-repeat: no-repeat; 
+    background-size: auto; 
+    background-color: #fffdf8; 
+  }
+  .bg-image-responsive-7{
+    background-position: left bottom; 
+    background-repeat: no-repeat; 
+    background-size: auto; 
+    background-color: #fffdf8; 
+  }
+  .font-licorice{
+    font-family: "Licorice", cursive;
+}
+.font-handlee{
+  font-family: "Handlee", cursive;
+}
+.font-brittany{
+    font-family: 'BrittanyAgustina', sans-serif;
+}
+.font-raleway {
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .font-raleway-italic {
+    font-family: "Raleway", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  input::placeholder {
+    color: black;
+    font-size: 0.8rem;
+    font-style: normal;
+  }
+
+  textarea::placeholder {
+    color: black;
+    font-size: 0.8rem;
+    font-style: normal;
+  }
+
+  .corben-regular {
+    font-family: "Corben", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .corben-bold {
+    font-family: "Corben", serif;
+    font-weight: 700;
+    font-style: normal;
+  }

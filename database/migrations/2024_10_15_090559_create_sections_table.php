@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('body');
-            $table->integer('type_background');
-            $table->string('background');
             $table->foreignId('template_id')->constrained();
             $table->timestamps();
         });

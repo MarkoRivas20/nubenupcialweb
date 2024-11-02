@@ -1,49 +1,45 @@
 <?php
 
-namespace App\Livewire\Admin\Products;
+namespace App\Livewire\Admin\Invitations\Image;
 
 use App\Models\Image;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class ProductImages extends Component
+class ImageIndex extends Component
 {
     use WithFileUploads;
 
-    public $product;
-    public $openModalImages = false;
+    public $section;
+ 
     public $photos = [];
 
-    public function uploadPhotos(){
+    public function uploadFiles(){
 
         $this->validate([
-            'photos.*' => 'image|max:1024', // 1MB Max
+            'photos.*' => 'max:1024', // 1MB Max
         ]);
 
         foreach ($this->photos as $photo) {
 
-            $url = Storage::put('/photos', $photo);
+            $url = Storage::put('/sections', $photo);
 
-            $this->product->images()->create([
+            $this->section->images()->create([
                 'file_path' => $url
             ]);
 
         }
-
-        $this->openModalImages = false;
         $this->photos = [];
-       
     }
 
     public function DeleteImage(Image $image){
         Storage::delete($image->file_path);
         $image->delete();
     }
-
+    
     public function render()
     {
-
-        return view('livewire.admin.products.product-images');
+        return view('livewire.admin.invitations.image.image-index');
     }
 }

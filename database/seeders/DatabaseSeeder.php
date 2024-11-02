@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Configuration;
 use App\Models\Product;
+use App\Models\Resource;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -36,7 +37,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
-            OptionSeeder::class
+            OptionSeeder::class,
+            TemplateSeeder::class
         ]);
 
         Category::create([
@@ -55,6 +57,14 @@ class DatabaseSeeder extends Seeder
                 'paymentMethod' => 1,
                 'couponStatus' => 1
             ]
+        ]);
+
+        Resource::create([
+            'name' => 'Canciones'
+        ]);
+
+        Resource::create([
+            'name' => 'Imagenes'
         ]);
     }
 }
