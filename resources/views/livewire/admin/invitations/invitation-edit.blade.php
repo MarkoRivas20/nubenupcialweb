@@ -12,7 +12,7 @@
             </span>
 
         </div>
-        <div class="px-6 pt-4 grid grid-cols-1 lg:grid-cols-3 gap-4 pb-4">
+        <div class="px-6 pt-4 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 pb-4">
             <div>
                 <x-label class="mb-1">Nombre</x-label>
                 <x-input wire:model="invitationName" class="w-full" placeholder="Por favor, introduzca el nombre de la invitación"/>
@@ -20,6 +20,10 @@
             <div>
                 <x-label class="mb-1">Slug</x-label>
                 <x-input wire:model="invitationSlug" class="w-full" placeholder="Por favor, introduzca el slug de la invitación"/>
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Documento del Usuario</x-label>
+                <x-input wire:model="userDocument" class="w-full" placeholder="Por favor, introduzca el documento del usuario"/>
             </div>
             <div>
                 <x-label class="mb-1">
@@ -33,12 +37,33 @@
             </div>
         </div>
 
-        <div class="px-6 pt-4 grid grid-cols-1 lg:grid-cols-2 gap-4 pb-4">
+        <div class="px-6 pt-4 grid grid-cols-1 xl:grid-cols-2 gap-4 pb-4">
             <div class="mb-4">
                 <x-label class="mb-1">Icono</x-label>
                 <input type="file" accept="image/*" wire:model="image" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
                 @if ($invitationIcon)
                 <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($invitationIcon)}}" target="_blank">Ver Imagen</a>
+                @endif
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Logo</x-label>
+                <input type="file" accept="image/*" wire:model="logo" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+                @if ($invitationLogo)
+                <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($invitationLogo)}}" target="_blank">Ver Imagen</a>
+                @endif
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Fondo de Carga</x-label>
+                <input type="file" accept="image/*" wire:model="background" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+                @if ($invitationBackground)
+                <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($invitationBackground)}}" target="_blank">Ver Imagen</a>
+                @endif
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">QR</x-label>
+                <input type="file" accept="image/*" wire:model="qr" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+                @if ($invitationQr)
+                    <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($invitationQr)}}" target="_blank">Ver Imagen</a>
                 @endif
             </div>
         </div>

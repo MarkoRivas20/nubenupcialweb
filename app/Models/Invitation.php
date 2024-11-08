@@ -17,10 +17,22 @@ class Invitation extends Model
         'name',
         'slug',
         'icon',
-        'status'
+        'status',
+        'load_logo',
+        'load_background',
+        'qr',
+        'user_id'
     ];
 
     public function sections(){
         return $this->hasMany(InvitationSection::class);
+    }
+
+    public function confirmations(){
+        return $this->hasMany(Confirmation::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

@@ -26,10 +26,14 @@ Route::get('checkout/pay/successful', function(){
     return view('checkout.successful');
 })->name('checkout.successful');
 
-Route::get('orders',[OrderController::class,'index'])->middleware('auth')->name('orders.index');
-Route::get('orders/{order}',[OrderController::class,'show'])->middleware('auth')->name('orders.show');
+Route::get('orders',[OrderController::class,'index'])->middleware('auth')->middleware('can:manage orders users')->name('orders.index');
+Route::get('orders/{order}',[OrderController::class,'show'])->middleware('auth')->middleware('can:manage orders users')->name('orders.show');
 
+Route::get('invitations',[InvitationController::class,'index'])->middleware('auth')->name('invitations.index');
 Route::get('invitations/{invitation}',[InvitationController::class,'show'])->name('invitations.show');
+Route::get('invitations/{invitation}/confirmations',[InvitationController::class,'confirmations'])->middleware('auth')->name('invitations.confirmations');
+Route::get('invitations/{invitation}/download',[InvitationController::class,'download'])->middleware('auth')->name('invitations.download');
+Route::get('invitations/{invitation}/export',[InvitationController::class,'export'])->middleware('auth')->name('invitations.export');
 
 Route::get('404', function(){
     return view('404');

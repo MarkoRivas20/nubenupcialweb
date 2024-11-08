@@ -137,9 +137,11 @@ class CheckoutController extends Controller implements HasMiddleware
             $couponValidate = $this->validateCoupon($coupon);
             $discount = $this->getDiscount($couponValidate->type, $couponValidate->value, $total);
             $total = round( $total - $discount, 2);
+            $this->createOrder(1, '', $total, $couponValidate->code, $discount);
+        }else{
+            $this->createOrder(1, '', $total, '', $discount);
         }
 
-        $this->createOrder(1, '', $total, $couponValidate->code, $discount);
 
         return redirect()->route('checkout.successful')->with('digitalWallet',[
             'response' => 'Pronto un colaborador se comunicará contigo para poder brindarte el número al cual realizar la transferencia',

@@ -15,8 +15,17 @@
                         <b>S/  {{$coupon['discount']}}</b>
                     </p>
                 </div>
-                <hr class="mb-2">
+                
             @endif
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 mb-2">
+                <p><b>Cliente:</b> {{$client['name']}}</p>
+                <p><b>Documento:</b> {{$client['document']}}</p>
+                <p><b>Correo:</b> {{$client['email']}}</p>
+                <p><b>Celular:</b> {{$client['phone']}}</p>
+                
+            </div>
+            <hr class="mb-2">
 
             <div class="space-y-2">
                 @foreach ($order as $item)

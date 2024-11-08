@@ -16,7 +16,7 @@
                             Nombre Completo
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            DNI
+                            Documento
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Email
@@ -44,18 +44,7 @@
                                 {{ $user->name . ' ' . $user->last_name }}
                             </td>
                             <td class="px-6 py-4">
-                                @switch($user->document_type)
-                                    @case(1)
-                                        DNI {{ $user->document }}
-                                    @break
-
-                                    @case(2)
-                                        RUC {{ $user->document }}
-                                    @break
-
-                                    @default
-                                        DESCONOCIDO
-                                @endswitch
+                                {{$user->document_type->name}} - {{$user->document}}
 
                             </td>
                             <td class="px-6 py-4">

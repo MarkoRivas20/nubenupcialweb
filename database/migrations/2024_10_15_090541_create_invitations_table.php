@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('icon');
             $table->string('slug');
+            $table->string('load_background');
+            $table->string('load_logo');
+            $table->string('qr')->nullable();
             $table->boolean('status')->default(0);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

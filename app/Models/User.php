@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Enums\TypeOfDocuments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -66,10 +68,15 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'document_type' => TypeOfDocuments::class
         ];
     }
-
+    
     public function orders(){
         return $this->hasMany(Order::class);
+    }
+
+    public function invitations(){
+        return $this->hasMany(Invitation::class);
     }
 }

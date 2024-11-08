@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\InvitationController;
 use App\Http\Controllers\Api\SortController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -11,3 +12,5 @@ Route::get('/user', function (Request $request) {
 Route::post('/sort/covers', [SortController::class, 'covers'])->name('api.sort.covers');
 
 Route::post('/sort/sections', [SortController::class, 'sections'])->name('api.sort.sections');
+
+Route::post('/invitation/save', [InvitationController::class, 'save'])->name('api.invitation.save');

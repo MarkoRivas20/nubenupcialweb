@@ -71,6 +71,10 @@
                                     </x-dropdown-link>
                                     <div class="border-t border-gray-200"></div>
                                 @endcan
+                                <x-dropdown-link href="{{route('invitations.index')}}">
+                                    Mis invitaciones
+                                </x-dropdown-link>
+                                <div class="border-t border-gray-200"></div>
                                 <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf
     

@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Invitations;
 use App\Models\Invitation;
 use App\Models\InvitationAttribute;
 use App\Models\InvitationSection;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -17,10 +18,17 @@ class InvitationEdit extends Component
     public $nameSection = "";
     public $openModal = false;
     public $image;
+    public $logo;
+    public $background;
+    public $qr;
 
     public $invitationName = "";
     public $invitationSlug = "";
     public $invitationIcon = "";
+    public $invitationLogo = "";
+    public $invitationBackground = "";
+    public $invitationQr = "";
+    public $userDocument = "";
     public $invitationStatus = false;
     public $invitationSelected = [];
 
@@ -28,7 +36,12 @@ class InvitationEdit extends Component
         $this->invitationName = $this->invitation->name;
         $this->invitationSlug = $this->invitation->slug;
         $this->invitationIcon = $this->invitation->icon;
+        $this->invitationLogo = $this->invitation->load_logo;
+        $this->invitationBackground = $this->invitation->load_background;
+        $this->invitationQr = $this->invitation->qr;
         $this->invitationStatus = $this->invitation->status;
+
+        $this->userDocument = $this->invitation->user->document;
 
         foreach ($this->invitation->sections()->orderBy('order','asc')->get() as $index=>$section) {
             
@@ -93,9 +106,13 @@ class InvitationEdit extends Component
 
         $this->validate([
             'image' => 'nullable|max:1024',
+            'logo' => 'nullable|max:3072',
+            'background' => 'nullable|max:3072',
+            'qr' => 'nullable|max:3072',
             'invitationName' => 'required',
             'invitationSlug' => 'required|unique:invitations,slug,'.$this->invitation->id,
             'invitationStatus' => 'required|boolean',
+            'userDocument' => 'required|exists:users,document',
             'invitationSelected.*.name' => 'required',
             'invitationSelected.*.body' => 'required',
             'invitationSelected.*.attributes.*.type' => 'required|in:1,2,3',
@@ -103,17 +120,44 @@ class InvitationEdit extends Component
             'invitationSelected.*.attributes.*.value' => 'required',
         ]);
 
+
         if ($this->image) {
 
             Storage::delete($this->invitationIcon);
             $this->invitationIcon = $this->image->store('invitations');
         }
 
+        if ($this->logo) {
+
+            Storage::delete($this->invitationLogo);
+            $this->invitationLogo = $this->logo->store('invitations');
+        }
+
+        if ($this->background) {
+
+            Storage::delete($this->invitationBackground);
+            $this->invitationBackground = $this->background->store('invitations');
+        }
+
+        if ($this->qr) {
+
+            if ($this->invitationQr) {
+                Storage::delete($this->invitationQr);
+            }
+            $this->invitationQr = $this->qr->store('invitations');
+        }
+
+        $user = User::where('document', $this->userDocument)->first();
+
         $this->invitation->update([
             'name' => $this->invitationName,
             'slug' => $this->invitationSlug,
             'icon' => $this->invitationIcon,
-            'status' => $this->invitationStatus
+            'load_logo' => $this->invitationLogo,
+            'load_background' => $this->invitationBackground,
+            'qr' => $this->invitationQr,
+            'status' => $this->invitationStatus,
+            'user_id' => $user->id
         ]);
 
         foreach ($this->invitationSelected as $key => $section) {

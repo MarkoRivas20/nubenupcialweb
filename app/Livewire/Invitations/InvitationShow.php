@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Livewire\Admin\Invitations;
+namespace App\Livewire\Invitations;
 
-use App\Models\Confirmation;
 use Livewire\Component;
 
 class InvitationShow extends Component
@@ -25,6 +24,6 @@ class InvitationShow extends Component
 
     public function render()
     {
-        return view('livewire.admin.invitations.invitation-show');
+        return view('livewire.invitations.invitation-show');
     }
 }

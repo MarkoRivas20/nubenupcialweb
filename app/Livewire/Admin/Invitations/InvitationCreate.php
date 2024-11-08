@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Invitations;
 use App\Models\Invitation;
 use App\Models\InvitationAttribute;
 use App\Models\InvitationSection;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -19,6 +20,9 @@ class InvitationCreate extends Component
     public $invitationName = "";
     public $invitationSlug = "";
     public $invitationIcon;
+    public $invitationLogo;
+    public $invitationBackground;
+    public $userDocument = "";
     public $templateSelected = [];
 
     public function mount(){
@@ -81,8 +85,11 @@ class InvitationCreate extends Component
 
         $this->validate([
             'invitationIcon' => 'required|max:1024',
+            'invitationLogo' => 'required|max:3072',
+            'invitationBackground' => 'required|max:3072',
             'invitationName' => 'required',
             'invitationSlug' => 'required|unique:invitations,slug',
+            'userDocument' => 'required|exists:users,document',
             'templateSelected.*.name' => 'required',
             'templateSelected.*.body' => 'required',
             'templateSelected.attributes.*.type' => 'required|in:1,2,3',
@@ -90,13 +97,20 @@ class InvitationCreate extends Component
             'templateSelected.attributes.*.value' => 'required',
         ]);
 
-        $url = $this->invitationIcon->store('invitations');
+        $urlIcon = $this->invitationIcon->store('invitations');
+        $urlLogo = $this->invitationLogo->store('invitations');
+        $urlBackground = $this->invitationBackground->store('invitations');
+
+        $user = User::where('document', $this->userDocument)->first();
 
         $invitation = Invitation::create([
             'name' => $this->invitationName,
             'slug' => $this->invitationSlug,
-            'icon' => $url,
-            'status' => false
+            'icon' => $urlIcon,
+            'load_background' => $urlBackground,
+            'load_logo' => $urlLogo,
+            'status' => false,
+            'user_id' => $user->id
         ]);
 
         foreach ($this->templateSelected as $key => $section) {

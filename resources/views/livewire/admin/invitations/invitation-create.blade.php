@@ -18,8 +18,20 @@
                 <x-input wire:model="invitationSlug" class="w-full" placeholder="Por favor, introduzca el slug de la invitación"/>
             </div>
             <div class="mb-4">
+                <x-label class="mb-1">Documento del Usuario</x-label>
+                <x-input wire:model="userDocument" class="w-full" placeholder="Por favor, introduzca el documento del usuario"/>
+            </div>
+            <div class="mb-4">
                 <x-label class="mb-1">Icono</x-label>
                 <input type="file" accept="image/*" wire:model="invitationIcon" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Logo</x-label>
+                <input type="file" accept="image/*" wire:model="invitationLogo" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Fondo de carga</x-label>
+                <input type="file" accept="image/*" wire:model="invitationBackground" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
             </div>
         </div>
     </div>
@@ -106,3 +118,4 @@
     </x-dialog-modal>
 
 </div>
+

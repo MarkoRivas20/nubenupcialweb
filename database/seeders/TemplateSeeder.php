@@ -314,6 +314,12 @@ class TemplateSeeder extends Seeder
         ]);
 
         Attribute::create([
+            'key' => '{{$regalo_mesa_regalos}}',
+            'type' => 1,
+            'section_id' => $section6->id,
+        ]);
+
+        Attribute::create([
             'key' => '{{$texto_1_mesa_regalos}}',
             'type' => 1,
             'section_id' => $section6->id,
@@ -393,23 +399,23 @@ class TemplateSeeder extends Seeder
                 <span class="font-licorice text-center text-5xl text-[#555555] mb-10">Confirma tu Asistencia</span>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 mb-2">
                   <div>
-                    <input class="font-handlee bg-[#F9F2EC] rounded-lg w-full text-sm h-8 px-4 border-2 border-[#F9E2CE] focus:ring-[#f0cfb4] focus:outline-none focus:border-[#f0cfb4]" type="text" placeholder="Nombre de los asistentes" name="nombre" wire:model="nombre">
+                    <input class="font-handlee bg-[#F9F2EC] rounded-lg w-full text-sm h-8 px-4 border-2 border-[#F9E2CE] focus:ring-[#f0cfb4] focus:outline-none focus:border-[#f0cfb4]" type="text" placeholder="Nombre de los asistentes" name="nombre" id="nombre">
                   </div>
                   <div>
-                    <input class="font-handlee bg-[#F9F2EC] rounded-lg w-full text-sm h-8 px-4 border-2 border-[#F9E2CE] focus:ring-[#f0cfb4] focus:outline-none focus:border-[#f0cfb4]" type="text" placeholder="Teléfono" name="telefono" wire:model="telefono">
+                    <input class="font-handlee bg-[#F9F2EC] rounded-lg w-full text-sm h-8 px-4 border-2 border-[#F9E2CE] focus:ring-[#f0cfb4] focus:outline-none focus:border-[#f0cfb4]" type="text" placeholder="Teléfono" name="telefono" id="telefono">
                   </div>
                 </div>
-                <select class="font-handlee bg-[#F9F2EC] rounded-lg w-full text-sm h-8 px-4 border-2 border-[#F9E2CE] mb-2" id=""  style="font-size: 0.8rem;" name="confirmacion" wire:model="confirmacion">
-                  <option value="" disabled selected>Confirmación</option>
-                  <option value="Sí">Sí, asistiré.</option>
-                  <option value="No">Lo siento, no podré asistir</option>
+                <select class="font-handlee bg-[#F9F2EC] rounded-lg w-full text-sm h-8 px-4 border-2 border-[#F9E2CE] mb-2 focus:ring-[#f0cfb4] focus:outline-none focus:border-[#f0cfb4]"  style="font-size: 0.8rem;" name="confirmacion" id="confirmacion">
+                  <option value="" disabled>Confirmación</option>
+                  <option value="1">Sí, asistiré.</option>
+                  <option value="0">Lo siento, no podré asistir</option>
                 </select>
-                <textarea name="" id="" rows="5" class="font-handlee bg-[#F9F2EC] p-2 text-sm border-2 border-[#F9E2CE] rounded-lg mb-2 px-4" placeholder="Mensaje para los novios (Opcional)" name="mensaje" wire:model="mensaje"></textarea>
+                <textarea name="mensaje" id="mensaje" rows="5" class="font-handlee bg-[#F9F2EC] p-2 text-sm border-2 border-[#F9E2CE] rounded-lg mb-2 px-4 focus:ring-[#f0cfb4] focus:outline-none focus:border-[#f0cfb4]" placeholder="Mensaje para los novios (Opcional)" ></textarea>
                 <div class="w-full">
         
-                  <button class="bg-[#E8D7BD] w-40 py-2 rounded-lg font-bold float-right mb-2 font-handlee text-sm" wire:click="addUser">Enviar</button>
+                  <button class="bg-[#E8D7BD] w-40 py-2 rounded-lg font-bold float-right mb-2 font-handlee text-sm" onclick="sendConfirmation()">Enviar</button>
                 </div>
-      
+        
             </div>
           </div>',
             'template_id' => $template->id,
@@ -452,34 +458,33 @@ class TemplateSeeder extends Seeder
             
             window.addEventListener("load", function() {
                 this.audio.src = this.songFile;
-            
+                AOS.init();
             })
             
             this.audio.addEventListener("timeupdate", (currentTime)=>{
-                    this.percent =  (this.audio.currentTime * 100) / {{$songTime}};
-            document.getElementById("percentsong").style.width= this.percent+"%";
+                this.percent =  (this.audio.currentTime * 100) / {{$songTime}};
+                document.getElementById("percentsong").style.width= this.percent+"%";
             
-                  });
+            });
             
             setInterval(function(){
-                    var now = new Date().getTime();
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+                    
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                    
+                document.getElementById("dayscountdown").innerText = days + "";
+                document.getElementById("hourscountdown").innerText = hours + "";
+                document.getElementById("minutescountdown").innerText =  minutes + "";
+                document.getElementById("secondscountdown").innerText = seconds + "";
             
-              var distance = countDownDate - now;
-            
-              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-            document.getElementById("dayscountdown").innerText = days + "";
-            document.getElementById("hourscountdown").innerText = hours + "";
-            document.getElementById("minutescountdown").innerText =  minutes + "";
-            document.getElementById("secondscountdown").innerText = seconds + "";
-            
-                  },1000);
+            },1000);
             
             function showPanel(){
-            Swal.fire({
+                Swal.fire({
                   html: `
                     <div class="flex flex-col">
                     <span class="font-bold">{{$banco_1_script}}</span>
@@ -501,20 +506,60 @@ class TemplateSeeder extends Seeder
                   focusConfirm: false,
                 });
             }
+        
             function playSong(){
                 if(this.paused){
                   this.audio.play()
                   this.paused = false;
-            document.getElementById("iconplay").className = "fa-solid fa-pause";
+                    document.getElementById("iconplay").className = "fa-solid fa-pause";
                 }else{
                   this.audio.pause()
                   this.paused = true;
-            document.getElementById("iconplay").className = "fa-solid fa-play";
+                document.getElementById("iconplay").className = "fa-solid fa-play";
                 }
                 
               }
             
-            </script>',
+            function sendConfirmation(){
+        
+                nombre = document.getElementById("nombre").value;
+                telefono = document.getElementById("telefono").value;
+                confirmacion = document.getElementById("confirmacion").value;
+                mensaje = document.getElementById("mensaje").value;
+                invitacion = "{{$slug_script}}";
+        
+                axios.post("http://nubenupcial.test/api/invitation/save", {
+                    nombre,
+                    telefono,
+                    confirmacion,
+                    mensaje,
+                    invitacion 
+                }).then((response) =>{
+                    if (response.data == "OK") {
+                        
+                        document.getElementById("nombre").value = "";
+                        document.getElementById("telefono").value = "";
+                        document.getElementById("confirmacion").value = "";
+                        document.getElementById("mensaje").value = "";
+            
+                        Swal.fire({
+                            icon: "success",
+                            title: "Guardado correctamente",
+                            text: "Gracias por tu respuesta"
+                        })
+                    }
+                    
+                }).catch((error)=> {
+        
+                    Swal.fire({
+                        icon: "error",
+                        title: "¡Oops!",
+                        text: "Algo ha salido mal"
+                    })
+                });
+            } 
+            
+        </script>',
             'template_id' => $template->id,
         ]);
 
@@ -603,6 +648,11 @@ class TemplateSeeder extends Seeder
             'section_id' => $section11->id,
         ]);
 
+        Attribute::create([
+            'key' => '{{$slug_script}}',
+            'type' => 1,
+            'section_id' => $section11->id,
+        ]);
 
     }
 }

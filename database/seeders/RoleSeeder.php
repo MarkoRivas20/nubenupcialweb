@@ -14,11 +14,11 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = Role::create([
+        $adminRole = Role::create([
             'name' => 'admin',
         ]);
 
-        $admin->syncPermissions([
+        $adminRole->syncPermissions([
             'access dashboard',
             'manage options',
             'manage categories',
@@ -38,8 +38,12 @@ class RoleSeeder extends Seeder
         $user = User::find(1);
         $user->assignRole('admin');
 
-        Role::create([
+        $userRole = Role::create([
             'name' => 'user'
+        ]);
+
+        $userRole->syncPermissions([
+            'manage orders users',
         ]);
     }
 }

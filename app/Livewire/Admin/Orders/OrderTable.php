@@ -15,6 +15,7 @@ class OrderTable extends DataTableComponent
     public $openModalOrder = false;
     public $order = [];
     public $coupon = [];
+    public $client = [];
 
     public function configure(): void
     {
@@ -115,8 +116,15 @@ class OrderTable extends DataTableComponent
     }
 
     public function showOrder(Order $order){
-
+        
         $this->order = [];
+        $this->client = [
+            "name" => $order->user->name . " " . $order->user->last_name,
+            "email" => $order->user->email,
+            "phone" => $order->user->phone,
+            "document" => $order->user->document_type->name . " - " . $order->user->document,
+        ];
+
         $this->coupon = [
             'promo_code' => $order->promo_code,
             'discount' => $order->discount,

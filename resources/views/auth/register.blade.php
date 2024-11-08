@@ -1,15 +1,20 @@
+
 <x-guest-layout>
-    <x-authentication-card width="sm:max-w-2xl">
-        <x-slot name="logo">
+    <div class="min-h-screen bg-purple-400 flex justify-center items-center">
+    <div class="absolute w-60 h-60 rounded-xl bg-purple-300 -top-5 -left-16 z-0 transform rotate-45 hidden md:block"></div>
+    <div class="w-full mx-4 pb-12 pt-8 px-8 md:px-12 my-4 md:my-0 bg-white rounded-2xl shadow-xl z-20 sm:max-w-2xl">
+
+        <div class="flex flex-col sm:justify-center items-center pt-6 sm:pt-0 mb-8">
+
             <x-authentication-card-logo />
-        </x-slot>
+        </div>
 
         <x-validation-errors class="mb-4" />
-
+    
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <x-label for="name" value="{{ __('Name') }}" />
                     <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
@@ -84,5 +89,10 @@
                 </x-button>
             </div>
         </form>
-    </x-authentication-card>
+    </div>
+    <div class="w-40 h-40 absolute bg-purple-300 rounded-full top-0 right-12 hidden md:block"></div>
+    <div class="w-20 h-40 absolute bg-purple-300 rounded-full bottom-20 left-10 transform rotate-45 hidden md:block"></div>
+  </div>
 </x-guest-layout>
+
+
