@@ -41,6 +41,18 @@ return [
         'password' => env('NIUBIZ_PASSWORD'),
         'url_api' => env('NIUBIZ_URL_API'),
         'url_js' => env('NIUBIZ_URL_JS')
-    ]
+    ],
+
+    'google' => [    
+        'client_id' => env('GOOGLE_CLIENT_ID'),  
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),  
+        'redirect' => 'auth/google/callback'
+    ],
+
+    'facebook' => [    
+        'client_id' => env('FACEBOOK_CLIENT_ID'),  
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),  
+        'redirect' => env('FACEBOOK_REDIRECT_URI') 
+    ],
 
 ];

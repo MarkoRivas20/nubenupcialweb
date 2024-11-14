@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
 use App\Models\Product;
@@ -34,6 +36,11 @@ Route::get('invitations/{invitation}',[InvitationController::class,'show'])->nam
 Route::get('invitations/{invitation}/confirmations',[InvitationController::class,'confirmations'])->middleware('auth')->name('invitations.confirmations');
 Route::get('invitations/{invitation}/download',[InvitationController::class,'download'])->middleware('auth')->name('invitations.download');
 Route::get('invitations/{invitation}/export',[InvitationController::class,'export'])->middleware('auth')->name('invitations.export');
+
+Route::get('auth/{provider}/redirect', [SocialLoginController::class , 'redirect'])->name('auth.socialite.redirect');
+Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback'])->name('auth.socialite.callback');
+
+Route::get('platforms/{platform}/{verificationCode}',[PlatformController::class,'show'])->middleware('auth')->name('platforms.show');
 
 Route::get('404', function(){
     return view('404');

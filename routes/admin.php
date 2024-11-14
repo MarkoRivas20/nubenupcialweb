@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CoverController;
 use App\Http\Controllers\Admin\InvitationController;
 use App\Http\Controllers\Admin\OptionController;
 use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\Admin\PlatformController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\SectionController;
@@ -36,6 +37,10 @@ Route::put('users/{user}/update',[UserController::class,'update'])->middleware('
 Route::get('configurations/{configuration}/edit', [ConfigurationController::class, 'edit'])->middleware('can:manage configurations')->name('configurations.edit');
 
 Route::resource('coupons', CouponController::class)->middleware('can:manage coupons');
+
+Route::get('platforms',[PlatformController::class,'index'])->middleware('can:manage platforms')->name('platforms.index');
+Route::get('platforms/create',[PlatformController::class,'create'])->middleware('can:manage platforms')->name('platforms.create');
+Route::get('platforms/{platform}/edit',[PlatformController::class,'edit'])->middleware('can:manage platforms')->name('platforms.edit');
 
 Route::get('resources',[ResourceController::class,'index'])->middleware('can:manage resources')->name('resources.index');
 Route::get('resources/{resource}/edit',[ResourceController::class,'edit'])->middleware('can:manage resources')->name('resources.edit');

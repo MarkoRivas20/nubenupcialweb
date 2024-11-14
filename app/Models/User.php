@@ -8,6 +8,7 @@ use App\Enums\TypeOfDocuments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Crypt;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
@@ -35,6 +36,8 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+        'provider_name',
+        'provider_id',
     ];
 
     /**
@@ -47,6 +50,7 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
+        'provider_token'
     ];
 
     /**
@@ -71,6 +75,15 @@ class User extends Authenticatable
             'document_type' => TypeOfDocuments::class
         ];
     }
+
+    public function setProviderTokenAttribute($value){
+        return $this->attributes['provider_token'] = Crypt::crypt($value);
+    }
+
+    public function getProviderTokenAttribute($value)
+    {
+        return Crypt::decrypt($value);
+    }
     
     public function orders(){
         return $this->hasMany(Order::class);
@@ -78,5 +91,13 @@ class User extends Authenticatable
 
     public function invitations(){
         return $this->hasMany(Invitation::class);
+    }
+
+    public function myPlatforms(){
+        return $this->hasMany(Platform::class);
+    }
+
+    public function platforms(){
+        return $this->belongsToMany(Platform::class)->using(PlatformUser::class)->withTimestamps();
     }
 }

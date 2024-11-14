@@ -79,6 +79,12 @@
             'active' => request()->routeIs('admin.invitations.*')
         ],
         [
+            'icon' => 'fa-solid fa-camera',
+            'name' => 'Plataformas',
+            'route' => route('admin.platforms.index'),
+            'active' => request()->routeIs('admin.platforms.*')
+        ],
+        [
             'header' => 'Administrar ordenes',
         ],
         [
