@@ -39,8 +39,16 @@
                 </div>
             </div>
             <div class="mb-4">
-                <x-label class="mb-1">Imagen de Fondo</x-label>
+                <x-label class="mb-1">Icono</x-label>
+                <input type="file" accept="image/*" wire:model="icon" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Primera Imagen de Fondo</x-label>
                 <input type="file" accept="image/*" wire:model="background" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Segunda Imagen de Fondo</x-label>
+                <input type="file" accept="image/*" wire:model="background2" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
             </div>
             <div class="mb-4">
                 <x-label class="mb-1">Logo</x-label>

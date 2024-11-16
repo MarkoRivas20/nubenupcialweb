@@ -5,9 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class CouponController extends Controller
+class CouponController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'can:manage coupons',
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

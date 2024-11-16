@@ -21,6 +21,8 @@ class PlatformCreate extends Component
     public $qtyPhotos = 0;
     public $qtyUsers = 0;
     public $background;
+    public $background2;
+    public $icon;
     public $loadLogo;
     public $loadBackground;
     public $userDocument = "";
@@ -41,6 +43,8 @@ class PlatformCreate extends Component
             'slug' => 'required|unique:platforms,slug',
             'title' => 'required',
             'text' => 'required',
+            'background2' => 'required',
+            'icon' => 'required',
             'qtyPhotos' => 'required|numeric',
             'qtyUsers' => 'required|numeric',
             'userDocument' => 'required|exists:users,document',
@@ -49,6 +53,8 @@ class PlatformCreate extends Component
         $urlBackground= $this->background->store('platforms');
         $urlLoadLogo = $this->loadLogo->store('platforms');
         $urlLoadBackground = $this->loadBackground->store('platforms');
+        $urlBackground2 = $this->background2->store('platforms');
+        $urlIcon = $this->icon->store('platforms');
 
         $user = User::where('document', $this->userDocument)->first();
 
@@ -62,6 +68,8 @@ class PlatformCreate extends Component
             'load_background' => $urlLoadBackground,
             'load_logo' => $urlLoadLogo,
             'background' => $urlBackground,
+            'background2' => $urlBackground2,
+            'icon' => $urlIcon,
             'verification_code' => $this->verificationCode,
             'status' => false,
             'user_id' => $user->id

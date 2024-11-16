@@ -18,6 +18,6 @@ class PlatformUser extends Pivot
     }*/
 
     public function images(){
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->hasMany(ImagePlatform::class);
     }
 }

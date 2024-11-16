@@ -40,7 +40,10 @@ Route::get('invitations/{invitation}/export',[InvitationController::class,'expor
 Route::get('auth/{provider}/redirect', [SocialLoginController::class , 'redirect'])->name('auth.socialite.redirect');
 Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback'])->name('auth.socialite.callback');
 
+Route::get('platforms',[PlatformController::class,'index'])->middleware('auth')->name('platforms.index');
 Route::get('platforms/{platform}/{verificationCode}',[PlatformController::class,'show'])->middleware('auth')->name('platforms.show');
+Route::post('platforms/{platform}/{verificationCode}/store',[PlatformController::class,'store'])->middleware('auth')->name('platforms.store');
+
 
 Route::get('404', function(){
     return view('404');

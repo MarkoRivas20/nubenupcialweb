@@ -1,9 +1,10 @@
 <div>
-    <x-validation-errors class="mb-4"/>
-
     <x-slot name="action">
         <a class="btn btn-blue" href="{{route('admin.invitations.show', $invitation)}}">Vista Previa</a>
     </x-slot>
+    
+    <x-validation-errors class="mb-4"/>
+
 
     <div class="bg-white rounded-lg shadow mb-4">
         <div class="bg-gray-100 border-b border-gray-300 rounded-t-lg overflow-auto flex items-center px-6 py-4 uppercase font-semibold justify-between">

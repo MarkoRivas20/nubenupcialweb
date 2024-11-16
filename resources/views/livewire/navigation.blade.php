@@ -74,6 +74,9 @@
                                 <x-dropdown-link href="{{route('invitations.index')}}">
                                     Mis invitaciones
                                 </x-dropdown-link>
+                                <x-dropdown-link href="{{route('platforms.index')}}">
+                                    Mis plataformas
+                                </x-dropdown-link>
                                 <div class="border-t border-gray-200"></div>
                                 <form method="POST" action="{{ route('logout') }}" x-data>
                                     @csrf

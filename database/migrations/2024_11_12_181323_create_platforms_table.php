@@ -21,8 +21,11 @@ return new class extends Migration
             $table->integer('qty_photos');
             $table->integer('qty_users');
             $table->string('background');
+            $table->string('background2');
             $table->string('load_background');
             $table->string('load_logo');
+            $table->string('icon');
+            $table->string('qr')->nullable();
             $table->boolean('status')->default(false);
             $table->foreignId('user_id')->constrained();
             $table->timestamps();

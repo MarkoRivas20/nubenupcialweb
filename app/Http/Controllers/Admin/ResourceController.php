@@ -5,9 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Resource;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class ResourceController extends Controller
+class ResourceController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            'can:manage resources',
+        ];
+    }
     public function index(){
         $resources = Resource::all();
 

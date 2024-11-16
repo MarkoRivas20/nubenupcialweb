@@ -22,6 +22,9 @@ class PlatformEdit extends Component
     public $qtyPhotos = 0;
     public $qtyUsers = 0;
     public $background;
+    public $background2;
+    public $icon;
+    public $qr;
     public $loadLogo;
     public $loadBackground;
     public $userDocument = "";
@@ -30,11 +33,17 @@ class PlatformEdit extends Component
     public $urlLoadBackground;
     public $urlLoadLogo;
     public $urlBackground;
+    public $urlIcon;
+    public $urlBackground2;
+    public $urlQr;
 
     public function mount(){
         $this->urlLoadBackground = $this->platform->load_background;
         $this->urlLoadLogo = $this->platform->load_logo;
         $this->urlBackground = $this->platform->background;
+        $this->urlIcon = $this->platform->icon;
+        $this->urlBackground2 = $this->platform->background2;
+        $this->urlQr= $this->platform->qr;
         $this->name = $this->platform->name;
         $this->slug = $this->platform->slug;
         $this->title = $this->platform->title;
@@ -58,6 +67,8 @@ class PlatformEdit extends Component
             'loadLogo' => 'nullable|max:3072',
             'loadBackground' => 'nullable|max:3072',
             'background' => 'nullable|max:3072',
+            'icon' => 'nullable|max:3072',
+            'background2' => 'nullable|max:3072',
             'name' => 'required',
             'slug' => 'required|unique:platforms,slug,'.$this->platform->id,
             'title' => 'required',
@@ -73,6 +84,26 @@ class PlatformEdit extends Component
 
             Storage::delete($this->platform->background);
             $this->urlBackground = $this->background->store('platforms');
+        }
+
+        if ($this->background2) {
+
+            Storage::delete($this->platform->background2);
+            $this->urlBackground2 = $this->background2->store('platforms');
+        }
+
+        if ($this->icon) {
+
+            Storage::delete($this->platform->icon);
+            $this->urlIcon = $this->icon->store('platforms');
+        }
+
+        if ($this->qr) {
+
+            if ($this->urlQr) {
+                Storage::delete($this->urlQr);
+            }
+            $this->urlQr = $this->qr->store('platforms');
         }
 
         if ($this->loadLogo) {
@@ -99,6 +130,9 @@ class PlatformEdit extends Component
             'verification_code' => $this->verificationCode,
             'load_logo' => $this->urlLoadLogo,
             'background' => $this->urlBackground,
+            'icon' => $this->urlIcon,
+            'background2' => $this->urlBackground2,
+            'qr' => $this->urlQr,
             'status' => $this->status,
             'user_id' => $user->id
         ]);

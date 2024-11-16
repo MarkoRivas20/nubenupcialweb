@@ -25,7 +25,10 @@ class Platform extends Model
         'load_background',
         'load_logo',
         'status',
-        'user_id'
+        'user_id',
+        'background2',
+        'icon',
+        'qr'
     ];
 
     //Para el usuario dueño de la plataforma

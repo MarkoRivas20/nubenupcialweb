@@ -1,4 +1,8 @@
 <div>
+    <x-slot name="action">
+        <a class="btn btn-blue" href="{{route('admin.platforms.show', $platform)}}">Vista Previa</a>
+    </x-slot>
+
     <x-validation-errors class="mb-4"/>
 
     <div class="bg-white rounded-lg shadow mb-4">
@@ -39,10 +43,24 @@
                 </div>
             </div>
             <div class="mb-4">
-                <x-label class="mb-1">Imagen de Fondo</x-label>
+                <x-label class="mb-1">Icono</x-label>
+                <input type="file" accept="image/*" wire:model="icon" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+                @if ($platform->icon)
+                <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($platform->icon)}}" target="_blank">Ver Imagen</a>
+                @endif
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Primera imagen de Fondo</x-label>
                 <input type="file" accept="image/*" wire:model="background" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
                 @if ($platform->background)
                 <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($platform->background)}}" target="_blank">Ver Imagen</a>
+                @endif
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">Segunda imagen de Fondo</x-label>
+                <input type="file" accept="image/*" wire:model="background2" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+                @if ($platform->background2)
+                <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($platform->background2)}}" target="_blank">Ver Imagen</a>
                 @endif
             </div>
             <div class="mb-4">
@@ -57,6 +75,13 @@
                 <input type="file" accept="image/*" wire:model="loadBackground" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
                 @if ($platform->load_background)
                 <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($platform->load_background)}}" target="_blank">Ver Imagen</a>
+                @endif
+            </div>
+            <div class="mb-4">
+                <x-label class="mb-1">QR</x-label>
+                <input type="file" accept="image/*" wire:model="qr" class="mb-1 p-1 w-full text-slate-500 text-sm rounded-full leading-6 file:bg-blue-200 file:text-blue-700 file:font-semibold file:border-none file:px-4 file:py-1 file:mr-6 file:rounded-full hover:file:bg-blue-100 border border-gray-300">
+                @if ($platform->qr)
+                <a class="text-xs -mt-2 ml-2 text-blue-500 hover:text-underline hover:text-blue-700" href="{{Storage::url($platform->qr)}}" target="_blank">Ver Imagen</a>
                 @endif
             </div>
             <div class="mb-4">
