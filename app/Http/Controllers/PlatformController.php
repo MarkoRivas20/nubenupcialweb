@@ -6,12 +6,9 @@ use App\Models\ImagePlatform;
 use App\Models\Platform;
 use App\Models\PlatformUser;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Firebase;
-use Illuminate\Support\Str;
 
 class PlatformController extends Controller
 {
@@ -29,26 +26,28 @@ class PlatformController extends Controller
 
                 $platformUser = PlatformUser::where('user_id', auth()->id())->where('platform_id', $platform->id)->first();
                 $userName = Auth::user()->name . ' ' . Auth::user()->last_name;
+                $usersQty = null;
+                $imagesCount = null;
                 
                 if ($platformUser) {
                     //mandar correctamente a pagina
                     $imagesCount =  DB::table('image_platforms')->where('platform_user_id', $platformUser->id)->count();
-                    return view('platforms.show', compact('platform','userName','imagesCount'));
+                    return view('platforms.show', compact('platform','userName','imagesCount','usersQty'));
                 }else{
     
-                    $users = DB::table('platform_user')->where('platform_id', $platform->id)->get();
+                    $usersQty = DB::table('platform_user')->where('platform_id', $platform->id)->count();
     
-                    if($users->count() >= $platform->qty_users){
+                    if($usersQty >= $platform->qty_users){
     
-                        return 'lleno';
                         //mandar correctamente a la pagina pero con un aviso de usuarios completos
+                        return view('platforms.show', compact('platform','userName','imagesCount','usersQty'));
     
                     }else{
                         //mandar conrrectamente a pagina
                         $platform->users()->attach(auth()->id());
                         $platformUser = PlatformUser::where('user_id', auth()->id())->where('platform_id', $platform->id)->first();
                         $imagesCount =  DB::table('image_platforms')->where('platform_user_id', $platformUser->id)->count();
-                        return view('platforms.show', compact('platform','userName','imagesCount'));
+                        return view('platforms.show', compact('platform','userName','imagesCount','usersQty'));
                     }
                 }
             }
@@ -61,14 +60,34 @@ class PlatformController extends Controller
     }
 
     public function store(Platform $platform, $verificationCode ,Request $request){
-        
-        $request->validate([
-            'image'=> 'required|image|max:1024',
-        ]);
 
+        if($request->has('gallery')){
+
+            $request->validate([
+                'gallery'=> 'required|image|max:1024',
+            ]);
+
+        }else if($request->has('camera')){
+
+            $request->validate([
+                'camera'=> 'required|image|max:1024',
+            ]);
+
+        }else{
+            return redirect()->route('platforms.show', [$platform, $verificationCode])->with('swal', 'error');
+        }
+        
         $platformUser = PlatformUser::where('user_id', auth()->id())->where('platform_id', $platform->id)->first();
 
-        $url = Storage::disk('platforms')->put($platform->slug,$request->file('image'));
+        if($request->has('gallery')){
+
+            $url = Storage::disk('platforms')->put($platform->id,$request->file('gallery'));
+
+        }else if($request->has('camera')){
+
+            $url = Storage::disk('platforms')->put($platform->id,$request->file('camera'));
+
+        }
 
         ImagePlatform::create([
             'url' => $url,
@@ -81,9 +100,22 @@ class PlatformController extends Controller
 
     public function download(Platform $platform){
 
-        $split = explode(".", $platform->qr);
+        if (auth()->id() == $platform->user->id) {
 
-        return Storage::download($platform->qr, "QR ".$platform->name.".".$split[1]);
+            $split = explode(".", $platform->qr);
+    
+            return Storage::download($platform->qr, "QR ".$platform->name.".".$split[1]);
+        }
+
+    }
+
+    public function details(Platform $platform){
+
+        if (auth()->id() == $platform->user->id) {
+
+            return view('platforms.detail', compact('platform'));
+        }
+
     }
 
 }

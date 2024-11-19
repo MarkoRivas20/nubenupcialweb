@@ -36,7 +36,7 @@
 
         <div class="md:flex-1">
 
-            <div class="flex items-cemter">
+            <div class="flex items-center">
                 <span class="mr-2">
                     Ordenar por:
                 </span>

@@ -42,6 +42,7 @@ Route::get('platforms',[PlatformController::class,'index'])->middleware('can:man
 Route::get('platforms/create',[PlatformController::class,'create'])->middleware('can:manage platforms')->name('platforms.create');
 Route::get('platforms/{platform}/edit',[PlatformController::class,'edit'])->middleware('can:manage platforms')->name('platforms.edit');
 Route::get('platforms/{platform}',[PlatformController::class,'show'])->middleware('can:manage platforms')->name('platforms.show');
+Route::get('platforms/{platform}/images',[PlatformController::class,'images'])->middleware('can:manage platforms')->name('platforms.images');
 
 Route::get('resources',[ResourceController::class,'index'])->middleware('can:manage resources')->name('resources.index');
 Route::get('resources/{resource}/edit',[ResourceController::class,'edit'])->middleware('can:manage resources')->name('resources.edit');

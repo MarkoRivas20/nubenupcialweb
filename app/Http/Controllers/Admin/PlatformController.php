@@ -75,4 +75,8 @@ class PlatformController extends Controller implements HasMiddleware
         return view('admin.platforms.edit', compact('platform'));
     }
 
+    public function images(Platform $platform){
+        return view('admin.platforms.images', compact('platform'));
+    }
+
 }

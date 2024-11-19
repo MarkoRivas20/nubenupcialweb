@@ -43,45 +43,58 @@
         <div id="Container-1" class="h-svh animate__animated animate__fadeIn">
             <div id="Page-1" class="h-svh flex flex-col justify-between" style="background-image: url('/storage/{{ $platform->background }}'); background-position: center; background-repeat: no-repeat; background-size: cover; background-color: #fffdf8; ">
                 <div class="bg-gradient-inverse flex text-white pl-2 pt-px h-16 animate__animated animate__slideInDown animate__delay-1s">
-                    <div class="flex" style="margin-top: 2px;">
-                        <span class="text-4xl font-bold font-handlee">{{$platform->qty_photos - $imagesCount}}</span>
-                    </div>
-                    <div class="flex flex-col ml-1 text-sm pt-1.5 font-handlee">
-                        <div class="-mt-px">
-                            <span>Fotos</span>
+                    @if (!$usersQty && $usersQty < $platform->qty_users)
+                        <div class="flex" style="margin-top: 2px;">
+                            <span class="text-4xl font-bold font-handlee">{{$platform->qty_photos - $imagesCount}}</span>
                         </div>
-                        <div class="-mt-0.5">
-                            <span>Restantes</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gradient flex flex-col h-96 justify-end items-center pb-6 gap-3 px-6 animate__animated animate__slideInUp animate__delay-1s">
-                    <span class="text-bold text-3xl text-white font-handlee">{{ $platform->title }}</span>
-                    <span class="text-bold text-xl text-white font-handlee">{{ $platform->text }}</span>
-                    <div class="w-full mb-2">
-                        <input type="text" value="{{$userName}}" class="font-handlee block w-full px-4 py-3 text-gray-200 border-2 border-gray-900/80 rounded-lg bg-gray-800/80 text-base focus:ring-white focus:outline-none focus:border-white" disabled>
-                        <span class="text-sm text-gray-500 italic font-handlee">* Los novios podrán conocer de quien es la foto</span>
-                    </div>
-                    <div class="w-44">
-                        <div class="flex items-center rounded-full bg-white cursor-pointer h-10 px-4" onclick="cameraInput()">
-                            <div class="m-auto text-base">
-                                <span class="font-bold font-handlee">Tomar Foto</span>
-                                <i class="fa-solid fa-arrow-right ml-2"></i>
-                                
-    
+                        <div class="flex flex-col ml-1 text-sm pt-1.5 font-handlee">
+                            <div class="-mt-px">
+                                <span>Fotos</span>
+                            </div>
+                            <div class="-mt-0.5">
+                                <span>Restantes</span>
                             </div>
                         </div>
+                    @endif
+                </div>
+
+                @if ($usersQty && $usersQty >= $platform->qty_users)
+                    <div class="bg-gradient flex h-56 items-center pb-6 gap-3 px-6 animate__animated animate__slideInUp animate__delay-1s">
+                        <div class="w-full text-center text-white font-handlee mt-8">
+                            <p class="text-xl font-semibold mb-4">¡Lo sentimos!</p>
+                            <p class="font-handlee">Se alcanzó el limite de usuarios</p>
+                        </div>
                     </div>
-    
-                    <div class="absolute bg-gray-800/90 h-10 w-10 left-6 flex items-center rounded-full border border-gray-900/90"
-                         onclick="galleryInput()">
-                        <i class="fa-regular fa-images m-auto text-gray-100"></i>
+                @else
+                    
+                    <div class="bg-gradient flex flex-col h-96 justify-end items-center pb-6 gap-3 px-6 animate__animated animate__slideInUp animate__delay-1s">
+                        <span class="text-bold text-3xl text-white font-handlee">{{ $platform->title }}</span>
+                        <span class="text-bold text-xl text-white font-handlee">{{ $platform->text }}</span>
+                        <div class="w-full mb-2">
+                            <input type="text" value="{{$userName}}" class="font-handlee block w-full px-4 py-3 text-gray-200 border-2 border-gray-900/80 rounded-lg bg-gray-800/80 text-base focus:ring-white focus:outline-none focus:border-white" disabled>
+                            <span class="text-sm text-gray-500 italic font-handlee">* Los novios podrán conocer de quien es la foto</span>
+                        </div>
+                        <div class="w-44">
+                            <div class="flex items-center rounded-full bg-white cursor-pointer h-10 px-4" onclick="cameraInput()">
+                                <div class="m-auto text-base">
+                                    <span class="font-bold font-handlee">Tomar Foto</span>
+                                    <i class="fa-solid fa-arrow-right ml-2"></i>
+                                    
+        
+                                </div>
+                            </div>
+                        </div>
+        
+                        <div class="absolute bg-gray-800/90 h-10 w-10 left-6 flex items-center rounded-full border border-gray-900/90"
+                            onclick="galleryInput()">
+                            <i class="fa-regular fa-images m-auto text-gray-100"></i>
+                            
+                        </div>
+                        
                         
                     </div>
-                    
-                    
-                </div>
+                @endif
+                
             </div>
         </div>
 
@@ -89,8 +102,8 @@
             
             <form action="{{route('platforms.store', [$platform, $platform->verification_code])}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input class="hidden" type="file" accept="image/*" id="gallery" name="image" onchange="showPage2()"/>
-                <input class="hidden" type="file" accept="image/*" capture="camera" id="camera" name="image" onchange="showPage2()"/>
+                <input class="hidden" type="file" accept="image/*" id="gallery" name="gallery" onchange="showPage2()"/>
+                <input class="hidden" type="file" accept="image/*" capture="camera" id="camera" name="camera" onchange="showPage2()"/>
                 <div class="h-full flex flex-col justify-between">
                     <i class="fa-solid fa-arrow-left ml-4 mt-3 text-2xl text-gray-700" onclick="hiddenPage2()"></i>
                     <div class="flex flex-col items-center mx-6 -mt-2">

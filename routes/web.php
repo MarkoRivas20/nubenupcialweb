@@ -43,7 +43,7 @@ Route::get('auth/{provider}/callback', [SocialLoginController::class , 'callback
 Route::get('platforms',[PlatformController::class,'index'])->middleware('auth')->name('platforms.index');
 Route::get('platforms/{platform}/{verificationCode}',[PlatformController::class,'show'])->middleware('auth')->name('platforms.show');
 Route::post('platforms/{platform}/{verificationCode}/store',[PlatformController::class,'store'])->middleware('auth')->name('platforms.store');
-
+Route::get('platforms/{platform}/images/details',[PlatformController::class,'details'])->middleware('auth')->name('platforms.details');
 
 Route::get('404', function(){
     return view('404');

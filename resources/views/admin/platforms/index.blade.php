@@ -48,10 +48,10 @@
                                         <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">Inactivo</span>
                                     @endif
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 flex space-x-2">
                                     
                                     <a href="{{route('admin.platforms.edit', $platform)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</a>
-                                    
+                                    <a href="{{route('admin.platforms.images', $platform)}}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Ver Fotos</a>
                                 </td>
                             </tr>
                         @endforeach
