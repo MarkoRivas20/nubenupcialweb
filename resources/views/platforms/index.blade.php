@@ -73,7 +73,7 @@
                                         @endif
                                         
                                         <a href="{{route('platforms.details', $platform)}}" class="underline text-blue-500 hover:no-underline cursor-pointer">
-                                            Ver Usuarios/Imagenes
+                                            Ver Imagenes
                                         </a>
                                         
 

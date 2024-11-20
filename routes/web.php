@@ -44,6 +44,7 @@ Route::get('platforms',[PlatformController::class,'index'])->middleware('auth')-
 Route::get('platforms/{platform}/{verificationCode}',[PlatformController::class,'show'])->middleware('auth')->name('platforms.show');
 Route::post('platforms/{platform}/{verificationCode}/store',[PlatformController::class,'store'])->middleware('auth')->name('platforms.store');
 Route::get('platforms/{platform}/images/details',[PlatformController::class,'details'])->middleware('auth')->name('platforms.details');
+Route::get('platforms/{platform}/download',[PlatformController::class,'download'])->middleware('auth')->name('platforms.download');
 
 Route::get('404', function(){
     return view('404');

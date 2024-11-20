@@ -1,17 +1,22 @@
 <div class="card">
     <div class="flex justify-between items-center">
 
-        <h2 class="mb-4 text-xl font-semibold text-gray-600">Imagenes</h2>
+        <h2 class="mb-1 text-xl font-semibold text-gray-600">Imagenes</h2>
         <div class="flex items-center">
-            <span class="mr-2">
+            <span class="mr-2 mb-1">
                 Usuario:
             </span>
-            <x-select wire:model.live="userIdSelected">
+            <x-select wire:model.live="userIdSelected" class="mb-1">
                 @foreach ($platformUsers as $platformUser)
                     <option value="{{$platformUser->user->id}}">{{$platformUser->user->name." ".$platformUser->user->last_name}}</option>
                 @endforeach
                 
             </x-select>
+            
+                
+            <button wire:click="download()" class="btn btn-blue ml-2">
+                Descargar Imagenes
+            </button>
         </div>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">

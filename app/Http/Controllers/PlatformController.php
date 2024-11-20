@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\ImagePlatform;
 use App\Models\Platform;
 use App\Models\PlatformUser;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use ZipStream\ZipStream;
 
 class PlatformController extends Controller
 {
@@ -98,13 +101,13 @@ class PlatformController extends Controller
         return redirect()->route('platforms.show', [$platform, $verificationCode])->with('swal', 'ok');
     }
 
-    public function download(Platform $platform){
+    public function download(Platform $platform, $type){
 
         if (auth()->id() == $platform->user->id) {
 
             $split = explode(".", $platform->qr);
-    
             return Storage::download($platform->qr, "QR ".$platform->name.".".$split[1]);
+            
         }else{
             return redirect()->route('notfound');
         }
