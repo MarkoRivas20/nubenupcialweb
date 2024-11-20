@@ -14,7 +14,7 @@ class InvitationController extends Controller
         $invitation = Invitation::where('slug', $request->get('invitacion'))->first();
      
         if ($invitation->id) {
-     
+            
             Confirmation::create([
                 'person_name' => $request->get('nombre'),
                 'person_phone' => $request->get('telefono'),

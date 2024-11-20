@@ -95,7 +95,7 @@ class PlatformController extends Controller
             'platform_user_id' => $platformUser->id
         ]);
 
-        return redirect()->route('platforms.show', [$platform, $verificationCode])->with('swal', 'Ok');
+        return redirect()->route('platforms.show', [$platform, $verificationCode])->with('swal', 'ok');
     }
 
     public function download(Platform $platform){
@@ -105,6 +105,8 @@ class PlatformController extends Controller
             $split = explode(".", $platform->qr);
     
             return Storage::download($platform->qr, "QR ".$platform->name.".".$split[1]);
+        }else{
+            return redirect()->route('notfound');
         }
 
     }
@@ -114,6 +116,8 @@ class PlatformController extends Controller
         if (auth()->id() == $platform->user->id) {
 
             return view('platforms.detail', compact('platform'));
+        }else{
+            return redirect()->route('notfound');
         }
 
     }

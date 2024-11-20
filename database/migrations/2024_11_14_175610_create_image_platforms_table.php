@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('image_platforms', function (Blueprint $table) {
             $table->id();
             $table->string('url');
-            $table->string('message');
+            $table->string('message')->nullable();
             $table->unsignedBigInteger('platform_user_id');
             $table->foreign('platform_user_id')->references('id')->on('platform_user');
             $table->timestamps();

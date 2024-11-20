@@ -522,41 +522,70 @@ class TemplateSeeder extends Seeder
             
             function sendConfirmation(){
         
-                nombre = document.getElementById("nombre").value;
-                telefono = document.getElementById("telefono").value;
-                confirmacion = document.getElementById("confirmacion").value;
-                mensaje = document.getElementById("mensaje").value;
-                invitacion = "{{$slug_script}}";
+                if(document.getElementById("nombre").value == "" || document.getElementById("telefono").value == ""){
         
-                axios.post("http://nubenupcial.test/api/invitation/save", {
-                    nombre,
-                    telefono,
-                    confirmacion,
-                    mensaje,
-                    invitacion 
-                }).then((response) =>{
-                    if (response.data == "OK") {
+                    if(document.getElementById("nombre").value){
+                        document.getElementById("nombre").classList.remove("border-red-500");
+                        document.getElementById("nombre").classList.remove("ring-red");
                         
-                        document.getElementById("nombre").value = "";
-                        document.getElementById("telefono").value = "";
-                        document.getElementById("confirmacion").value = "";
-                        document.getElementById("mensaje").value = "";
-            
-                        Swal.fire({
-                            icon: "success",
-                            title: "Guardado correctamente",
-                            text: "Gracias por tu respuesta"
-                        })
+                    }else{
+                        document.getElementById("nombre").classList.add("border-red-500");
+                        document.getElementById("nombre").classList.add("ring-red");
+                    }
+        
+                    if(document.getElementById("telefono").value){
+                        document.getElementById("telefono").classList.remove("border-red-500");
+                        document.getElementById("telefono").classList.remove("ring-red");
+                    }else{
+                        document.getElementById("telefono").classList.add("border-red-500");
+                        document.getElementById("telefono").classList.add("ring-red");
                     }
                     
-                }).catch((error)=> {
+                }else{
         
-                    Swal.fire({
-                        icon: "error",
-                        title: "¡Oops!",
-                        text: "Algo ha salido mal"
-                    })
-                });
+                    document.getElementById("nombre").classList.remove("border-red-500");
+                    document.getElementById("nombre").classList.remove("ring-red");
+                    document.getElementById("telefono").classList.remove("border-red-500");
+                    document.getElementById("telefono").classList.remove("ring-red");
+        
+                    nombre = document.getElementById("nombre").value;
+                    telefono = document.getElementById("telefono").value;
+                    confirmacion = document.getElementById("confirmacion").value;
+                    mensaje = document.getElementById("mensaje").value;
+                    invitacion = "{{$slug_script}}";
+            
+                    axios.post("http://nubenupcial.test/api/invitation/save", {
+                        nombre,
+                        telefono,
+                        confirmacion,
+                        mensaje,
+                        invitacion 
+                    }).then((response) =>{
+            
+                        if (response.data == "OK") {
+                            
+                            document.getElementById("nombre").value = "";
+                            document.getElementById("telefono").value = "";
+                            document.getElementById("confirmacion").value = "";
+                            document.getElementById("mensaje").value = "";
+                
+                            Swal.fire({
+                                icon: "success",
+                                title: "Guardado correctamente",
+                                text: "Gracias por tu respuesta"
+                            })
+                        }
+                        
+                    }).catch((error)=> {
+            
+                        Swal.fire({
+                            icon: "error",
+                            title: "¡Oops!",
+                            text: "Algo ha salido mal"
+                        })
+                    });
+                }
+        
             } 
             
         </script>',

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('person_name');
             $table->string('person_phone');
-            $table->string('person_message');
+            $table->string('person_message')->nullable();
             $table->boolean('person_confirmation');
             $table->foreignId('invitation_id')->constrained();
             $table->timestamps();

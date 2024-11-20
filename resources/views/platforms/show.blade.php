@@ -102,13 +102,13 @@
             
             <form action="{{route('platforms.store', [$platform, $platform->verification_code])}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input class="hidden" type="file" accept="image/*" id="gallery" name="gallery" onchange="showPage2()"/>
-                <input class="hidden" type="file" accept="image/*" capture="camera" id="camera" name="camera" onchange="showPage2()"/>
+                <input class="hidden" type="file" accept="image/*" id="gallery" name="gallery" onchange="previewImage(event, '#imgPreview')"/>
+                <input class="hidden" type="file" accept="image/*" capture="camera" id="camera" name="camera" onchange="previewImage(event, '#imgPreview')"/>
                 <div class="h-full flex flex-col justify-between">
                     <i class="fa-solid fa-arrow-left ml-4 mt-3 text-2xl text-gray-700" onclick="hiddenPage2()"></i>
                     <div class="flex flex-col items-center mx-6 -mt-2">
                     
-                    <img id="photo" class="photo rounded-lg w-7/12 mb-6 -rotate-3">
+                    <img id="imgPreview" class="photo rounded-lg w-7/12 mb-6">
                     <textarea rows="4" class="w-full p-4 text-gray-700 border-2 border-amber-800/50 rounded-lg bg-[#FDF4E8]/80 text-base focus:ring-amber focus:outline-none focus:border-amber-800" name="message" placeholder="Escribe un mensaje para los novios..."></textarea>
                     <div class="w-full">
                         <span class="text-sm text-gray-500 italic text-left font-handlee">* Opcional</span>
@@ -129,24 +129,68 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    @if (session('swal'))
+    @if ($errors->any())
         <script>
             Swal.fire({
-            position: "top-end",
-            html: `
-            <div class="flex text-white gap-2 items-center">
-                <div>
-                    <i class="fa-solid fa-check text-xl"></i>
+                position: "top-end",
+                html: `
+                <div class="flex text-white gap-2 items-center">
+                    <div>
+                        <i class="fa-solid fa-x text-xl"></i>
+                    </div>
+                    <div class="text-center flex-1">
+                        ¡Ha ocurrido un error!
+                    </div>
                 </div>
-                <div class="text-center flex-1">
-                    ¡Gracias por confirmar!
+                `,
+                showConfirmButton: false,
+                background: "#FF0000",
+                timer: 2500
+                });
+        </script>
+    @endif
+
+    @if (session('swal'))
+        <script>
+
+            response = "{{session('swal')}}"
+
+            if ( response == 'ok') {
+                Swal.fire({
+                position: "top-end",
+                html: `
+                <div class="flex text-white gap-2 items-center">
+                    <div>
+                        <i class="fa-solid fa-check text-xl"></i>
+                    </div>
+                    <div class="text-center flex-1">
+                        ¡Gracias por confirmar!
+                    </div>
                 </div>
-            </div>
-            `,
-            showConfirmButton: false,
-            background: "#12EA00",
-            timer: 2500
-            });
+                `,
+                showConfirmButton: false,
+                background: "#12EA00",
+                timer: 2500
+                });
+            } else if(response == 'error'){
+                Swal.fire({
+                position: "top-end",
+                html: `
+                <div class="flex text-white gap-2 items-center">
+                    <div>
+                        <i class="fa-solid fa-x text-xl"></i>
+                    </div>
+                    <div class="text-center flex-1">
+                        ¡Ha ocurrido un error!
+                    </div>
+                </div>
+                `,
+                showConfirmButton: false,
+                background: "#FF0000",
+                timer: 2500
+                });
+            }
+            
         </script>
     @endif
 
@@ -168,7 +212,14 @@
             document.getElementById("gallery").click();
         }
 
-        function showPage2(){
+        function previewImage(event, querySelector){
+
+            const input = event.target;
+            $imgPreview = document.querySelector(querySelector);
+            if(!input.files.length) return
+            file = input.files[0];
+            objectURL = URL.createObjectURL(file);
+            $imgPreview.src = objectURL;
 
             document.getElementById("Container-1").classList.add('hidden');
             document.getElementById("Container-1").classList.add('delay-1000');
@@ -194,8 +245,11 @@
             document.getElementById("Page-1").classList.remove('animate__delay-1s');
         }
 
+        
+
 
     </script>
+
 
 </body>
 
