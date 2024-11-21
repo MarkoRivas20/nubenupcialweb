@@ -20,7 +20,7 @@ class PlatformDetail extends Component
     public $userIdSelected;
 
     public function mount(){
-        $this->platformUsers = PlatformUser::where('platform_id', $this->platform->id)->get();
+        $this->platformUsers = PlatformUser::where('platform_id', $this->platform->id)->where('user_id','!=', 1)->get();
 
         $this->userIdSelected = $this->platformUsers->first()->user->id;
     }
@@ -28,7 +28,7 @@ class PlatformDetail extends Component
     public function download(){
         $platform = $this->platform;
         $images = ImagePlatform::whereHas('platformUser', function($query) use ($platform){
-            $query->where('platform_id', $platform->id);
+            $query->where('platform_id', $platform->id)->where('user_id','!=', 1);
         })->get();
 
         return response()->streamDownload(function() use ($images) {

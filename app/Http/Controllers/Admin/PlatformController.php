@@ -11,6 +11,8 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\Str;
 
 class PlatformController extends Controller implements HasMiddleware
 {
@@ -54,7 +56,7 @@ class PlatformController extends Controller implements HasMiddleware
             return view('admin.platforms.show', compact('platform','userName','imagesCount','usersQty'));
         }else{
     
-            $usersQty = DB::table('platform_user')->where('platform_id', $platform->id)->count();
+            $usersQty = DB::table('platform_user')->where('user_id','!=', 1)->where('platform_id', $platform->id)->count();
     
             if($usersQty >= $platform->qty_users){
     
@@ -76,38 +78,66 @@ class PlatformController extends Controller implements HasMiddleware
         if($request->has('gallery')){
 
             $request->validate([
-                'gallery'=> 'required|image|max:1024',
+                'gallery'=> 'required|image',
             ]);
 
         }else if($request->has('camera')){
 
             $request->validate([
-                'camera'=> 'required|image|max:1024',
+                'camera'=> 'required|image',
             ]);
 
         }else{
-            return redirect()->route('platforms.show', $platform)->with('swal', 'error');
+            return redirect()->route('admin.platforms.show', $platform)->with('swal', 'error');
         }
         
         $platformUser = PlatformUser::where('user_id', auth()->id())->where('platform_id', $platform->id)->first();
-
+        $imageName = $platform->id."/".time().Str::random(20).'.jpeg';
+        
         if($request->has('gallery')){
 
-            $url = Storage::disk('platforms')->put($platform->id,$request->file('gallery'));
+            $url = Storage::disk('platforms')->put($imageName,$this->resizeImage($request->file('gallery')));
+
 
         }else if($request->has('camera')){
 
-            $url = Storage::disk('platforms')->put($platform->id,$request->file('camera'));
+           $url = Storage::disk('platforms')->put($imageName,$this->resizeImage($request->file('camera')));
 
         }
 
-        ImagePlatform::create([
-            'url' => $url,
-            'message' => $request->has('message') ? $request->message : '',
-            'platform_user_id' => $platformUser->id
-        ]);
+        if ($url) {
+            ImagePlatform::create([
+                'url' => $imageName,
+                'message' => $request->has('message') ? $request->message : '',
+                'platform_user_id' => $platformUser->id
+            ]);
+            return redirect()->route('admin.platforms.show', $platform)->with('swal', 'ok');
+        }else{
+            return redirect()->route('admin.platforms.show', $platform)->with('swal', 'error');
+        }
+    }
 
-        return redirect()->route('admin.platforms.show', $platform)->with('swal', 'ok');
+    protected function resizeImage($file){
+
+        $sizeInMegabytes = ($file->getSize()/1024)/1024;
+        
+        $image = ImageManager::gd()->read($file);
+
+        if($sizeInMegabytes <= 1.00){
+            return $image->toJpeg();
+        }
+
+        // ejemplo 1.5 MB
+        $percentReduce = (($sizeInMegabytes - 1.00) * 100) / $sizeInMegabytes;
+
+        $height = $image->height();// 1000
+        $width = $image->width(); 
+
+        $newHeight = $height - (($percentReduce * $height) / 100.00);
+        $newWidth = $width - (($percentReduce * $width) / 100.00);
+
+        return $image->resize($newWidth, $newHeight)->toJpeg();
+
     }
 
     /**

@@ -66,33 +66,44 @@
                         </div>
                     </div>
                 @else
-                    
-                    <div class="bg-gradient flex flex-col h-96 justify-end items-center pb-6 gap-3 px-6 animate__animated animate__slideInUp animate__delay-1s">
-                        <span class="text-bold text-3xl text-white font-handlee">{{ $platform->title }}</span>
-                        <span class="text-bold text-xl text-white font-handlee">{{ $platform->text }}</span>
-                        <div class="w-full mb-2">
-                            <input type="text" value="{{$userName}}" class="font-handlee block w-full px-4 py-3 text-gray-200 border-2 border-gray-900/80 rounded-lg bg-gray-800/80 text-base focus:ring-white focus:outline-none focus:border-white" disabled>
-                            <span class="text-sm text-gray-500 italic font-handlee">* Los novios podrán conocer de quien es la foto</span>
-                        </div>
-                        <div class="w-44">
-                            <div class="flex items-center rounded-full bg-white cursor-pointer h-10 px-4" onclick="cameraInput()">
-                                <div class="m-auto text-base">
-                                    <span class="font-bold font-handlee">Tomar Foto</span>
-                                    <i class="fa-solid fa-arrow-right ml-2"></i>
-                                    
-        
-                                </div>
+
+                    @if ($platform->qty_photos - $imagesCount == 0)
+                        <div class="bg-gradient flex h-56 items-center pb-6 gap-3 px-6 animate__animated animate__slideInUp animate__delay-1s">
+                            <div class="w-full text-center text-white font-handlee mt-8">
+                                <p class="text-xl font-semibold mb-4">¡Lo sentimos!</p>
+                                <p class="font-handlee">Se alcanzó el limite de fotos</p>
                             </div>
                         </div>
-        
-                        <div class="absolute bg-gray-800/90 h-10 w-10 left-6 flex items-center rounded-full border border-gray-900/90"
-                            onclick="galleryInput()">
-                            <i class="fa-regular fa-images m-auto text-gray-100"></i>
+                    @else
+                        
+                        <div class="bg-gradient flex flex-col h-96 justify-end items-center pb-6 gap-3 px-6 animate__animated animate__slideInUp animate__delay-1s">
+                            <span class="text-bold text-3xl text-white font-handlee">{{ $platform->title }}</span>
+                            <span class="text-bold text-xl text-white font-handlee">{{ $platform->text }}</span>
+                            <div class="w-full mb-2">
+                                <input type="text" value="{{$userName}}" class="font-handlee block w-full px-4 py-3 text-gray-200 border-2 border-gray-900/80 rounded-lg bg-gray-800/80 text-base focus:ring-white focus:outline-none focus:border-white" disabled>
+                                <span class="text-sm text-gray-500 italic font-handlee">* Los novios podrán conocer de quien es la foto</span>
+                            </div>
+                            <div class="w-44">
+                                <div class="flex items-center rounded-full bg-white cursor-pointer h-10 px-4" onclick="cameraInput()">
+                                    <div class="m-auto text-base">
+                                        <span class="font-bold font-handlee">Tomar Foto</span>
+                                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                                        
+            
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="absolute bg-gray-800/90 h-10 w-10 left-6 flex items-center rounded-full border border-gray-900/90"
+                                onclick="galleryInput()">
+                                <i class="fa-regular fa-images m-auto text-gray-100"></i>
+                                
+                            </div>
+                            
                             
                         </div>
-                        
-                        
-                    </div>
+                    @endif
+                    
                 @endif
                 
             </div>
